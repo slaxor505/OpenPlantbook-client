@@ -1,0 +1,173 @@
+{
+	"info": {
+		"_postman_id": "57305c7a-782e-48b8-b269-834190abaf4c",
+		"name": "Open Plantbook API Public",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Search Plant",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "search",
+							"value": "rose",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/plant/search?alias=acer",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"plant",
+						"search"
+					],
+					"query": [
+						{
+							"key": "alias",
+							"value": "acer"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Plant Details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/v1/plant/detail/14",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"plant",
+						"detail",
+						"14"
+					],
+					"query": [
+						{
+							"key": "pid",
+							"value": "72",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get token Client Creds",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "1n6J6dguLiOosROxVMLjwsmD2K7Cmxusx4rXJYeKb615lkpCQ67cA1M0HOyjOCZfws718B09iJF5HXiWVaZypYj1DsUXcj71REIwPwbstqlHX7CgXytTwpAWHDQkBPno",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "cTV5l4LjvKmSuj8u8f0IXjriy28GRglRa5w8p0mJ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "client",
+							"value": "admin",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "Abcd1234!",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "scope",
+							"value": "read",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/token/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"token",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "pxK6jKZqpV5YyHgsyxWLJN3vVv26Ak",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "b9d402da-7cd7-46ae-a58b-b3d1ff194e93",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "d8e1d30b-158e-4b11-a32a-984e7ea563f0",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
