@@ -39,7 +39,7 @@ curl --request GET 'https://open.plantbook.io/api/v1/plant/search?alias=acanthus
 
 In the response you will be able to get Plants Id in order to get details.
 
-{
+`{
     "count": 2,
     "next": null,
     "previous": null,
@@ -55,7 +55,7 @@ In the response you will be able to get Plants Id in order to get details.
             "display_pid": "Acanthus spinosus"
         }
     ]
-}
+}`
 
 4.  Get details about plant again using Bearer Token:
 
