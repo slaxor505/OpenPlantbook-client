@@ -6,90 +6,13 @@
 	},
 	"item": [
 		{
-			"name": "Search Plant",
+			"name": "1. Get token Client Creds",
 			"protocolProfileBehavior": {
-				"disableBodyPruning": true
+				"strictSSL": true
 			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "search",
-							"value": "rose",
-							"type": "text",
-							"disabled": true
-						}
-					]
-				},
-				"url": {
-					"raw": "{{url}}/api/v1/plant/search?alias=acer",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"plant",
-						"search"
-					],
-					"query": [
-						{
-							"key": "alias",
-							"value": "acer"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Plant Details",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{url}}/api/v1/plant/detail/14",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"plant",
-						"detail",
-						"14"
-					],
-					"query": [
-						{
-							"key": "pid",
-							"value": "72",
-							"disabled": true
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get token Client Creds",
 			"request": {
 				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "1n6J6dguLiOosROxVMLjwsmD2K7Cmxusx4rXJYeKb615lkpCQ67cA1M0HOyjOCZfws718B09iJF5HXiWVaZypYj1DsUXcj71REIwPwbstqlHX7CgXytTwpAWHDQkBPno",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "cTV5l4LjvKmSuj8u8f0IXjriy28GRglRa5w8p0mJ",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "POST",
 				"header": [],
@@ -102,16 +25,14 @@
 							"type": "text"
 						},
 						{
-							"key": "client",
-							"value": "admin",
-							"type": "text",
-							"disabled": true
+							"key": "client_id",
+							"value": "{{oauth_client}}",
+							"type": "text"
 						},
 						{
-							"key": "password",
-							"value": "Abcd1234!",
-							"type": "text",
-							"disabled": true
+							"key": "client_secret",
+							"value": "{{ouath_client_secret}}",
+							"type": "text"
 						},
 						{
 							"key": "scope",
@@ -135,6 +56,87 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "2. Search Plant",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "search",
+							"value": "rose",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/plant/search?alias=Acanthus",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"plant",
+						"search"
+					],
+					"query": [
+						{
+							"key": "alias",
+							"value": "Acanthus"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Plant Details",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/v1/plant/detail/68",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"plant",
+						"detail",
+						"68"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"auth": {
@@ -142,7 +144,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "pxK6jKZqpV5YyHgsyxWLJN3vVv26Ak",
+				"value": "8sewHuqsHMAxOMhnYHzeH4HlHoGOvA",
 				"type": "string"
 			}
 		]
