@@ -79,7 +79,7 @@ curl --request GET 'https://open.plantbook.io/api/v1/plant/detail/68' \
     "min_soil_moist": 15,
     "max_soil_ec": 2000,
     "min_soil_ec": 350
-}
+} 
 
 Known limitations:
 Potential issue at the moment is that "id" is not reliable and can be changed as it is managed by DB internally. Hence, if it cannot be used to  reliably identify a particular plant. Therefore, search is required to get this "id" before getting plant details. 
