@@ -8,7 +8,7 @@ In order to use this API you need to login to Open Plantbook web UI at https://o
 The easies way to get familiar with API is to use Browsable API within Web UI. The link can be found within Docs section.
 Alternatively, you can use excellent easy tool - Postman. Postman collection can be found in corresponding folder of this repository. You need to install free Postman API tool: https://www.postman.com/ and then import the collection.
 
-### Below is an manual walk through using CURL.
+### Below is a manual walk through using CURL.
 
 1. Get API credentials from Web UI.
 
@@ -35,7 +35,7 @@ We will need "token_string" on next step.
 Query parameter ?alias=<search string> is required.
 ```
 curl --request GET 'https://open.plantbook.io/api/v1/plant/search?alias=acanthus ilicifolius' \
---header 'Authorization: Bearer SqtIGQGIINB5KXZuabyTwhTGSyMoUmgkq5t1TBGI'
+--header 'Authorization: Bearer token_string'
 ```
 In the response you will be able to get Plants Id in order to get details.
 ```
@@ -60,7 +60,7 @@ In the response you will be able to get Plants Id in order to get details.
 4.  Get details about plant again using Bearer Token:
 ```
 curl --request GET 'https://open.plantbook.io/api/v1/plant/detail/68' \
---header 'Authorization: Bearer SqtIGQGIINB5KXZuabyTwhTGSyMoUmgkq5t1TBGI'
+--header 'Authorization: Bearer token_string'
 ```
 ```
 {
