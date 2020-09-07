@@ -1,14 +1,14 @@
 # OpenPlantbook-client
 This is repository for Open Plantbook API sample clients.
 
-In order to use this API you need to login to Open Plantbook web UI at https://open.plantbook.io and generate API credentials. The credentials are client_id and client_secret.
+## Requirements
+In order to use this API you need to login to Open Plantbook web UI at https://open.plantbook.io and generate API credentials. The credentials are client_id and client_secret. API authentication implements OAuth2 standard Client Credentials Grant flow.
 
-API authentication implements OAuth2 standard Client Credentials Grant flow.
-
+## Usage
 The easies way to get familiar with API is to use Browsable API within Web UI. The link can be found within Docs section.
 Alternatively, you can use excellent easy tool - Postman. Postman collection can be found in corresponding folder of this repository. You need to install free Postman API tool: https://www.postman.com/ and then import the collection.
 
-Below is an manual walk through using CURL.
+### Below is an manual walk through using CURL.
 
 1. Get API credentials from Web UI.
 
@@ -21,12 +21,12 @@ curl --location --request POST 'https://open.plantbook.io/api/v1/token/' \
 
 Response will be:
 
-{
+`{
     "access_token": "token_string",
     "expires_in": 2629800,
     "token_type": "Bearer",
     "scope": "read"
-}
+}`
 
 This is token to access API. It will expire in 2629800 seconds = 1 month. It is ok to get a new token everytime.
 We will need "token_string" on next step.
