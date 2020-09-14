@@ -1,6 +1,7 @@
 import requests
 import yaml
 import logging
+import sys
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -27,6 +28,7 @@ class Plant():
             self.populate_default_data()
 
     def get_plantbook_data(self):
+        """ Gets information about the plant from the openplantbook API """
         if not self._plantbook_token:
             self.get_plantbook_token()
         # url = "https://open.plantbook.io/api/v1/plant/detail/{}".format(self._species)
@@ -65,6 +67,7 @@ class Plant():
         self._set_conf_value('max_brightness', res['max_light_lux'])
 
     def get_plantbook_token(self):
+        """ Gets the token from the openplantbook API """
         url =  'https://open.plantbook.io/api/v1/token/'
         data = {
             'grant_type': 'client_credentials',
@@ -93,6 +96,7 @@ class Plant():
         _LOGGER.debug("Got token {} from {}".format(self._plantbook_token, url))
 
     def populate_default_data(self):
+        """ Adds the default min/max-values if no plantbook config is present """
         self._set_conf_value('min_temperature', DEFAULT_MIN_TEMPERATURE)
         self._set_conf_value('max_temperature', DEFAULT_MAX_TEMPERATURE)
         self._set_conf_value('min_moisture', DEFAULT_MIN_TEMPERATURE)
@@ -104,6 +108,7 @@ class Plant():
 
 
     def _set_conf_value(self, var, val):
+        """ Ensures that values explicitly set in the config is not overwritten """
         if var not in self._config or self._config[var] is None:
             self._config[var] = val
 
@@ -127,7 +132,11 @@ class Plant():
 
 
 with open('config.yaml') as file:
-    config = yaml.load(file, Loader=yaml.FullLoader)
+    try:
+        config = yaml.load(file, Loader=yaml.FullLoader)
+    except Exception:
+        print("Unable to open 'config.yaml'")
+        sys.exit()
 
 plants = {}
 for plant_name, plant_config in config.items():
