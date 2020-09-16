@@ -1,0 +1,9 @@
+my_plant:
+  plantbook_client_id: string_client_id_from_UI
+  plantbook_client_secret: string_client_secret_from_UI
+  species: unique species name
+
+other_plant:
+  min_temperature: 10
+  max_temperature: 100
+
