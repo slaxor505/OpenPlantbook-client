@@ -7,6 +7,23 @@
 	"item": [
 		{
 			"name": "1. Get token Client Creds",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8c1a6cb9-eb19-488d-a6cf-5983d433a1f9",
+						"exec": [
+							"if (pm.response.code == 200) {",
+							"    pm.test(\"Get inital access token\", function () {",
+							"        var response = pm.response.json();",
+							"        pm.collectionVariables.set(\"accessToken\", response.access_token);",
+							"    });",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"strictSSL": true
 			},
@@ -31,7 +48,7 @@
 						},
 						{
 							"key": "client_secret",
-							"value": "{{ouath_client_secret}}",
+							"value": "{{oauth_client_secret}}",
 							"type": "text"
 						},
 						{
@@ -68,7 +85,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "{{access_token}}",
+							"value": "{{accessToken}}",
 							"type": "string"
 						}
 					]
@@ -87,7 +104,7 @@
 					]
 				},
 				"url": {
-					"raw": "{{url}}/api/v1/plant/search?alias=Acanthus",
+					"raw": "{{url}}/api/v1/plant/search?alias=acer&limit=10&offset=20",
 					"host": [
 						"{{url}}"
 					],
@@ -100,7 +117,15 @@
 					"query": [
 						{
 							"key": "alias",
-							"value": "Acanthus"
+							"value": "acer"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "offset",
+							"value": "20"
 						}
 					]
 				}
@@ -108,14 +133,14 @@
 			"response": []
 		},
 		{
-			"name": "3. Plant Details",
+			"name": "3. Plant Details by Pid",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "{{access_token}}",
+							"value": "{{accessToken}}",
 							"type": "string"
 						}
 					]
@@ -123,7 +148,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/api/v1/plant/detail/68",
+					"raw": "{{url}}/api/v1/plant/detail/acer pseudoplatanus/",
 					"host": [
 						"{{url}}"
 					],
@@ -132,23 +157,14 @@
 						"v1",
 						"plant",
 						"detail",
-						"68"
+						"acer pseudoplatanus",
+						""
 					]
 				}
 			},
 			"response": []
 		}
 	],
-	"auth": {
-		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "8sewHuqsHMAxOMhnYHzeH4HlHoGOvA",
-				"type": "string"
-			}
-		]
-	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -169,6 +185,28 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"id": "f81674b5-2591-48b5-ae1b-0ce5a6f06994",
+			"key": "oauth_client",
+			"value": "client_id_here"
+		},
+		{
+			"id": "c0eb7a8a-3623-43c1-8005-1d789bebfaa5",
+			"key": "oauth_client_secret",
+			"value": "client_secret_here"
+		},
+		{
+			"id": "e35c3be6-6844-4126-8eed-09523493178e",
+			"key": "accessToken",
+			"value": "token_str_here"
+		},
+		{
+			"id": "409e46a5-2d60-43c0-a496-616f13e669e4",
+			"key": "url",
+			"value": "https://open.plantbook.io"
 		}
 	],
 	"protocolProfileBehavior": {}
