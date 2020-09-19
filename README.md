@@ -21,8 +21,8 @@ Breaking changes in comparison with 1.0-RC:
 - Added Python client by @Olen (https://github.com/Olen). Thanks and Kudos! The client is a step for Home-assistant.io integration and this is why it is a bit overcomplicated.  
 
 ## Usage
-The easies way to get familiar with API is to use Browsable API within Web UI. The link can be found within Docs section.
-Alternatively, you can use excellent easy tool - Postman. Postman collection can be found in corresponding folder of this repository. You need to install free Postman API tool: https://www.postman.com/ and then import the collection.
+The easiest way to get familiar with API is to use Browsable API within Web UI. The link can be found within Docs section.
+Alternatively, you can use excellent and easy tool - Postman. Postman collection can be found in corresponding folder of this repository. You need to install free Postman API tool: https://www.postman.com/ then import the collection.
 
 ### Below is a manual walk through using CURL.
 
@@ -45,7 +45,7 @@ Response will be:
 }
 ```
 This is token to access API. It will expire in 2629800 seconds = 1 month. It is ok to get a new token everytime.
-We will need "token_string" on next step.
+We will need "token_string" at next step.
 
 3. Make a Plant Search API call with 'Bearer Token' HTTP header:
 Query parameter ?alias=<search string> is required.
@@ -53,7 +53,7 @@ Query parameter ?alias=<search string> is required.
 curl --request GET 'https://open.plantbook.io/api/v1/plant/search?alias=acanthus%20ilicifolius' \
 --header 'Authorization: Bearer token_string'
 ```
-In the response you will be able to get Plant Id (pid) in order to get details.
+From the response, you can to get Plant Id (pid) in order to get the plant details.
 ```
 {
     "count": 2,
@@ -73,7 +73,7 @@ In the response you will be able to get Plant Id (pid) in order to get details.
     ]
 }
 ```
-4.  From previous step take "pid" value of the desired plant and get plant details again with Bearer Token. 
+4.  From previous step, take "pid" value of the desired plant and get the plant details with Bearer Token. 
 
 ```
 curl --request GET 'https://open.plantbook.io/api/v1/plant/detail/acanthus ilicifolius/' \
