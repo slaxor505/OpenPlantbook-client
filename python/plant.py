@@ -16,13 +16,13 @@ DEFAULT_MAX_BRIGHTNESS = 30000
 
 class Plant():
 
-    def __init__(self, name, config):
+    def __init__(self, name, config, token):
         """Initialize the Plant component."""
         self._config = config
         self._name = name
         self._species = self._config.get('species')
-        self._plantbook_token = None
-        if self._config.get('plantbook_client_id') and self._config.get('plantbook_client_secret'):
+        self._plantbook_token = token
+        if self._species:
             self.get_plantbook_data()
         else:
             self.populate_default_data()
@@ -30,10 +30,8 @@ class Plant():
     def get_plantbook_data(self):
         """ Gets information about the plant from the openplantbook API """
         if not self._plantbook_token:
-            self.get_plantbook_token()
-        # url = "https://open.plantbook.io/api/v1/plant/detail/{}".format(self._species)
-        # Temp as a demo, since get by name does not work yet
-        url = "https://open.plantbook.io/api/v1/plant/detail/5494/"
+            return
+        url = "https://open.plantbook.io/api/v1/plant/detail/{}".format(self._species)
         headers = {"Authorization": "Bearer {}".format(self._plantbook_token)}
         try:
             result = requests.get(url, headers=headers)
@@ -66,34 +64,6 @@ class Plant():
         self._set_conf_value('min_brightness', res['min_light_lux'])
         self._set_conf_value('max_brightness', res['max_light_lux'])
 
-    def get_plantbook_token(self):
-        """ Gets the token from the openplantbook API """
-        url =  'https://open.plantbook.io/api/v1/token/'
-        data = {
-            'grant_type': 'client_credentials',
-            'client_id': self._config['plantbook_client_id'],
-            'client_secret': self._config['plantbook_client_secret']
-        }
-        try:
-            result = requests.post(url, data = data)
-            result.raise_for_status()
-        except requests.exceptions.Timeout:
-            # Maybe set up for a retry, or continue in a retry loop
-            _LOGGER.error("Timeout connecting to {}".format(url))
-            return
-        except requests.exceptions.TooManyRedirects:
-            # Tell the user their URL was bad and try a different one
-            _LOGGER.error("Too many redirects connecting to {}".format(url))
-            return
-        except requests.exceptions.HTTPError as err:
-            _LOGGER.error(err)
-            return
-        except requests.exceptions.RequestException as err:
-            # catastrophic error. bail.
-            _LOGGER.error(err)
-            return
-        self._plantbook_token = result.json().get('access_token')
-        _LOGGER.debug("Got token {} from {}".format(self._plantbook_token, url))
 
     def populate_default_data(self):
         """ Adds the default min/max-values if no plantbook config is present """
@@ -129,6 +99,35 @@ class Plant():
         return self._config
 
 
+def get_plantbook_token(client_id, secret):
+    """ Gets the token from the openplantbook API """
+    url =  'https://open.plantbook.io/api/v1/token/'
+    data = {
+        'grant_type': 'client_credentials',
+        'client_id': client_id,
+        'client_secret': secret
+    }
+    try:
+        result = requests.post(url, data = data)
+        result.raise_for_status()
+    except requests.exceptions.Timeout:
+        # Maybe set up for a retry, or continue in a retry loop
+        _LOGGER.error("Timeout connecting to {}".format(url))
+        return
+    except requests.exceptions.TooManyRedirects:
+        # Tell the user their URL was bad and try a different one
+        _LOGGER.error("Too many redirects connecting to {}".format(url))
+        return
+    except requests.exceptions.HTTPError as err:
+        _LOGGER.error(err)
+        return
+    except requests.exceptions.RequestException as err:
+        # catastrophic error. bail.
+        _LOGGER.error(err)
+        return
+    token = result.json().get('access_token')
+    _LOGGER.debug("Got token {} from {}".format(token, url))
+    return token
 
 
 with open('config.yaml') as file:
@@ -139,8 +138,12 @@ with open('config.yaml') as file:
         sys.exit()
 
 plants = {}
-for plant_name, plant_config in config.items():
-    plants[plant_name] = Plant(plant_name, plant_config)
+if 'openplantbook' in config:
+    token = get_plantbook_token(config['openplantbook']['client_id'], config['openplantbook']['secret'])
 
-    print(plants[plant_name].name)
-    print(plants[plant_name].config)
+for plant_name, plant_config in config.items():
+    if plant_name != 'openplantbook':
+        plants[plant_name] = Plant(plant_name, plant_config, token)
+
+        print(plants[plant_name].name)
+        print(plants[plant_name].config)
