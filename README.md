@@ -4,9 +4,25 @@ This is repository for Open Plantbook API sample clients.
 ## Requirements
 In order to use this API you need to login to Open Plantbook web UI at https://open.plantbook.io and generate API credentials. The credentials are client_id and client_secret. API authentication implements OAuth2 standard Client Credentials Grant flow.
 
+## API Release notes:
+
+### version 1.0
+Breaking changes in comparison with 1.0-RC:
+- Removed api/v1/plant/detail/{id}/ endpoint
+- Removed "id" from responses
+- Now to get plant details use api/v1/plant/detail/{pid} endpoint.
+
+## Client Release notes:
+
+### version 1.0
+- Updated Postman collection:
+    - built-in variables for easier use (See variables specific to the Collection)
+    - "Get token" call now extracts and updates {{access_token}} value automatically (no need to copy/paste)
+- Added Python client by @Olen (https://github.com/Olen). Thanks and Kudos! The client is a step for Home-assistant.io integration and this is why it is a bit overcomplicated.  
+
 ## Usage
-The easies way to get familiar with API is to use Browsable API within Web UI. The link can be found within Docs section.
-Alternatively, you can use excellent easy tool - Postman. Postman collection can be found in corresponding folder of this repository. You need to install free Postman API tool: https://www.postman.com/ and then import the collection.
+The easiest way to get familiar with API is to use Browsable API within Web UI. The link can be found within Docs section.
+Alternatively, you can use excellent and easy tool - Postman. Postman collection can be found in corresponding folder of this repository. You need to install free Postman API tool: https://www.postman.com/ then import the collection.
 
 ### Below is a manual walk through using CURL.
 
@@ -29,15 +45,15 @@ Response will be:
 }
 ```
 This is token to access API. It will expire in 2629800 seconds = 1 month. It is ok to get a new token everytime.
-We will need "token_string" on next step.
+We will need "token_string" at next step.
 
 3. Make a Plant Search API call with 'Bearer Token' HTTP header:
 Query parameter ?alias=<search string> is required.
 ```
-curl --request GET 'https://open.plantbook.io/api/v1/plant/search?alias=acanthus ilicifolius' \
+curl --request GET 'https://open.plantbook.io/api/v1/plant/search?alias=acanthus%20ilicifolius' \
 --header 'Authorization: Bearer token_string'
 ```
-In the response you will be able to get Plants Id in order to get details.
+From the response, you can to get Plant Id (pid) in order to get the plant details.
 ```
 {
     "count": 2,
@@ -45,43 +61,40 @@ In the response you will be able to get Plants Id in order to get details.
     "previous": null,
     "results": [
         {
-            "id": 38,
-            "alias": "acanthus ilicifolius",
-            "display_pid": "Acanthus ilicifolius"
+            "pid": "acanthus ilicifolius",
+            "display_pid": "Acanthus ilicifolius",
+            "alias": "acanthus ilicifolius"
         },
         {
-            "id": 40,
-            "alias": "acanthus ilicifolius",
-            "display_pid": "Acanthus spinosus"
+            "pid": "acanthus spinosus",
+            "display_pid": "Acanthus spinosus",
+            "alias": "acanthus ilicifolius"
         }
     ]
 }
 ```
-4.  Get details about plant again using Bearer Token:
+4.  From previous step, take "pid" value of the desired plant and get the plant details with Bearer Token. 
+
 ```
-curl --request GET 'https://open.plantbook.io/api/v1/plant/detail/68' \
+curl --request GET 'https://open.plantbook.io/api/v1/plant/detail/acanthus ilicifolius/' \
 --header 'Authorization: Bearer token_string'
 ```
 ```
 {
-    "id": 68,
-    "pid": "acer sieboldianum",
-    "display_pid": "Acer sieboldianum",
-    "alias": "acer sieboldianum",
-    "max_light_mmol": 7200,
-    "min_light_mmol": 3000,
-    "max_light_lux": 75000,
-    "min_light_lux": 2800,
-    "max_temp": 35,
-    "min_temp": 5,
+    "pid": "acanthus ilicifolius",
+    "display_pid": "Acanthus ilicifolius",
+    "alias": "acanthus ilicifolius",
+    "max_light_mmol": 2500,
+    "min_light_mmol": 1200,
+    "max_light_lux": 6000,
+    "min_light_lux": 1500,
+    "max_temp": 32,
+    "min_temp": 10,
     "max_env_humid": 80,
     "min_env_humid": 30,
     "max_soil_moist": 60,
     "min_soil_moist": 15,
     "max_soil_ec": 2000,
     "min_soil_ec": 350
-} 
+}
 ```
-Known limitations:
-Potential issue at the moment is that "id" is not reliable and can be changed as it is managed by DB internally. Hence, if it cannot be used to  reliably identify a particular plant. Therefore, search is required to get this "id" before getting plant details. 
-I will be working on more reliable ID to get plant details. Possible it will be  HASH of plant name or plain "pid" field.
