@@ -1,6 +1,9 @@
-Rename config.yaml.dist to config.yaml
-
-Insert your data in the config file
+# Usage
+* Get client_id and secret from the Openplantbook API: https://open.plantbook.io/docs.html
+* Download the files
+* Rename config.yaml.dist to config.yaml
+* Insert client_id and secret in the config file
+* Install dependencies
 
 search.py
 - Search for a plant alias. Lists all hits from the API
