@@ -3,13 +3,11 @@
 * Download the files
 * Rename config.yaml.dist to config.yaml
 * Insert client_id and secret in the config file
-* Install dependencies
+* Install dependencies (see requirements.txt)
 
-search.py
+## search.py
 - Search for a plant alias. Lists all hits from the API
 
-plant.py
-- List all details for a single plant
 
 ```
 $ python search.py capsicum
@@ -21,11 +19,16 @@ $ python search.py capsicum
 | capsicum favorit yellow                | Capsicum Favorit Yellow                | capsicum annuum                     |
 | capsicum favorit yellow red 'gt57'     | Capsicum Favorit Yellow Red 'GT57'     | capsicum annuum                     |
 | capsicum mambo orange                  | Capsicum Mambo orange                  | capsicum annuum                     |
-(...)
+ (...)
 | solanum pseudocapsicum 'thurino light' | Solanum pseudocapsicum 'Thurino Light' | solanum pseudocapsicum              |
 +----------------------------------------+----------------------------------------+-------------------------------------+
 40 plants found
+```
 
+## plant.py
+- List all details for a single plant.  
+- Ensure that you wrap names with spaces in `""` and that you include the complete pid - with any `'` etc
+```
 $ python plant.py "capsicum favorit purple red 'gt58'"
 +----------------+------------------------------------+
 | Key            | Value                              |
