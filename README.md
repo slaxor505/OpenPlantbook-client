@@ -20,6 +20,9 @@ Breaking changes in comparison with 1.0-RC:
     - "Get token" call now extracts and updates {{access_token}} value automatically (no need to copy/paste)
 - Added Python client by @Olen (https://github.com/Olen). Thanks and Kudos! The client is a step for Home-assistant.io integration and this is why it is a bit overcomplicated.  
 
+## Integrations
+- [home-assistant](https://www.home-assistant.io/) integration. [Plant Monitor component](https://github.com/Olen/homeassistant-plant) and [PlantCard](https://github.com/Olen/lovelace-flower-card) which leverage the component. Discussion of HASS forum [here](https://community.home-assistant.io/t/cloud-plant-db-with-api-for-plantcard/).
+
 ## Usage
 The easiest way to get familiar with API is to use Browsable API within Web UI. The link can be found within Docs section.
 Alternatively, you can use excellent and easy tool - Postman. Postman collection can be found in corresponding folder of this repository. You need to install free Postman API tool: https://www.postman.com/ then import the collection.
