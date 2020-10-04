@@ -4,7 +4,14 @@ This is repository for Open Plantbook API sample clients.
 ## Requirements
 In order to use this API you need to login to Open Plantbook web UI at https://open.plantbook.io and generate API credentials. The credentials are client_id and client_secret. API authentication implements OAuth2 standard Client Credentials Grant flow.
 
-## API Release notes:
+
+
+
+## WebUI and API Release notes:
+
+### version 1.01
+- Browse-DB feature in WebUI so it is possible to search plants available in DB.
+- Small UI clean-ups
 
 ### version 1.0
 Breaking changes in comparison with 1.0-RC:
