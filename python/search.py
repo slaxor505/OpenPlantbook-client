@@ -10,9 +10,9 @@ logging.basicConfig()
 _LOGGER = logging.getLogger(__name__)
 _LOGGER.setLevel(logging.INFO)
 
-def search_plantbook(species, token):
+def get_plantbook(alias, token):
     """ Searches plantbook and list results """
-    url = "https://open.plantbook.io/api/v1/plant/detail/{}".format(species)
+    url = "https://open.plantbook.io/api/v1/plant/search?limit=1000&alias={}".format(alias)
     headers = {"Authorization": "Bearer {}".format(token)}
     try:
         result = requests.get(url, headers=headers)
@@ -35,10 +35,8 @@ def search_plantbook(species, token):
     res = result.json()
     _LOGGER.debug("Fetched data from {}:".format(url))
     _LOGGER.debug(res)
-    print(tabulate(res.items(), headers=['Key', 'Value'], tablefmt="psql"))
-
-    # print(tabulate(res['results'], headers={'pid': 'PID', 'display_pid': 'Display PID', 'alias': 'Alias'}, tablefmt="psql"))
-    # print("{} plants found".format(len(res['results'])))
+    print(tabulate(res['results'], headers={'pid': 'PID', 'display_pid': 'Display PID', 'alias': 'Alias'}, tablefmt="psql"))
+    print("{} plants found".format(len(res['results'])))
 
 
 def get_plantbook_token(client_id, secret):
@@ -87,4 +85,4 @@ searchstring = sys.argv[1]
 
 if 'openplantbook' in config:
     token = get_plantbook_token(config['openplantbook']['client_id'], config['openplantbook']['secret'])
-    search_plantbook(searchstring, token)
+    get_plantbook(searchstring, token)
