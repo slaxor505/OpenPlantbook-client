@@ -9,6 +9,10 @@ In order to use this API you need to login to Open Plantbook web UI at https://o
 
 ## WebUI and API Release notes:
 
+### version 1.02
+- Introduction of Plant images feature. api/v1/plant/detail/ endpoint returns Plant's image URL as image_url JSON string field.
+- Web UI is generally available for guests. Guests can search Plant DB but to get API key and plants details Signing in is required.
+
 ### version 1.01
 - Browse-DB feature in WebUI so it is possible to search plants available in DB.
 - Small UI clean-ups
@@ -105,6 +109,7 @@ curl --request GET 'https://open.plantbook.io/api/v1/plant/detail/acanthus ilici
     "max_soil_moist": 60,
     "min_soil_moist": 15,
     "max_soil_ec": 2000,
-    "min_soil_ec": 350
+    "min_soil_ec": 350,
+    "image_url": "https://example.com/n/sdpo/b/plant-img/o/acanthus%20ilicifolius.jpg"
 }
 ```
