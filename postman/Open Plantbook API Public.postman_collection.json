@@ -11,7 +11,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "8c1a6cb9-eb19-488d-a6cf-5983d433a1f9",
 						"exec": [
 							"if (pm.response.code == 200) {",
 							"    pm.test(\"Get inital access token\", function () {",
@@ -163,13 +162,136 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "CREATE Plant",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"display_pid\": \"Solanum lycopersicum\",\n    \"alias\": \"Tomato\",\n    \"max_light_mmol\": 7600,\n    \"min_light_mmol\": 3200,\n    \"max_light_lux\": 55000,\n    \"min_light_lux\": 3000,\n    \"max_temp\": 33,\n    \"min_temp\": 12,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 15,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 20,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/plant/create",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"plant",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Plant",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"pid\": \"solanum lycopersicum\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/plant/delete",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"plant",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "pid",
+							"value": "dddd",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE Plant PATCH",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"pid\": \"solanum lycopersicum\",\n    \"max_light_mmol\": 1111,\n    \"min_light_mmol\": 2222,\n    \"max_light_lux\": 4444,\n    \"min_light_lux\": 3333,\n    \"max_temp\": 66,\n    \"min_temp\": 55\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/plant/update",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"plant",
+						"update"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "b9d402da-7cd7-46ae-a58b-b3d1ff194e93",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -179,7 +301,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "d8e1d30b-158e-4b11-a32a-984e7ea563f0",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -189,25 +310,20 @@
 	],
 	"variable": [
 		{
-			"id": "f81674b5-2591-48b5-ae1b-0ce5a6f06994",
 			"key": "oauth_client",
 			"value": "client_id_here"
 		},
 		{
-			"id": "c0eb7a8a-3623-43c1-8005-1d789bebfaa5",
 			"key": "oauth_client_secret",
 			"value": "client_secret_here"
 		},
 		{
-			"id": "e35c3be6-6844-4126-8eed-09523493178e",
 			"key": "accessToken",
 			"value": "token_str_here"
 		},
 		{
-			"id": "409e46a5-2d60-43c0-a496-616f13e669e4",
 			"key": "url",
 			"value": "https://open.plantbook.io"
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

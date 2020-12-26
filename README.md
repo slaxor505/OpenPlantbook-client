@@ -23,6 +23,8 @@ There are 2 databases: user specific database (user's context) and main database
 
 
 3 new api calls are available:
+
+For examples see examples section and Postman collection within repository and also public Postman collection [here](https://documenter.getpostman.com/view/12627470/TVsxBRjD) :
   
 #### api/v1/plant/create Method: POST
 
@@ -63,8 +65,6 @@ Delete plant from user's context only. Plants cannot be removed from main DB.
     400 - Malformed request e.g. if a mandatory attribute is not provided.    
 
 Known issue with DELETE: It does not handle omitted mandtory attributes correctly and always return 404 Not Found even if <pid> is absent. Will be fixed in next version.
-
-For examples see examples section and Postman collection.
 
 ### version 1.02
 - Introduction of Plant images feature. api/v1/plant/detail/ endpoint returns Plant's image URL as image_url JSON string field.
