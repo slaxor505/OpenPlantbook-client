@@ -1,5 +1,4 @@
 requests
-yaml
-logging
+pyyaml
 tabulate
 
