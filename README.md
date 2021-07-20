@@ -7,6 +7,15 @@ In order to use this API you need to login to Open Plantbook web UI at https://o
 
 ## WebUI and API Release notes:
 
+### version 1.04 (20 July 2021)
+Major UI update. Now Users can:
+- Modify existing Public-Plants using "Modify" button in Browse DB.
+- Add new Plants using "Add Plant" button in side Menu. Plant is cloned into User-Plant and visible in "My Plants" side menu.
+- Modify own User-Plants via "My Plants" side menu.
+- The only way to delete User-Plant at the moment is via API DELETE call. UI-based deletion will be available in next release.
+
+The detailed documentation about UI Add/Modify operations is available in [Wiki](https://github.com/slaxor505/OpenPlantbook-client/wiki). 
+
 ### version 1.03 (26 December 2020)
 Major update:
 - Ability to add new and edit existing plants via API calls. (not UI yet)
