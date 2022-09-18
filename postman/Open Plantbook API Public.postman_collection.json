@@ -2,7 +2,9 @@
 	"info": {
 		"_postman_id": "57305c7a-782e-48b8-b269-834190abaf4c",
 		"name": "Open Plantbook API Public",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"description": "Documentation for Open Plantbook API.\n\n[https://open.plantbook.io](https://open.plantbook.io)\n\nThis is free service but it requires registration and API credentials. The credentials need to be generated from Web UI under API keys.\n\nProject page:\n\n[https://plantbook.io](https://plantbook.io)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12627470"
 	},
 	"item": [
 		{
@@ -43,11 +45,13 @@
 						{
 							"key": "client_id",
 							"value": "{{oauth_client}}",
+							"description": "Client ID from \"API keys\" in open.plantbook.io UI",
 							"type": "text"
 						},
 						{
 							"key": "client_secret",
 							"value": "{{oauth_client_secret}}",
+							"description": "Client Secret from \"API keys\" in open.plantbook.io UI",
 							"type": "text"
 						},
 						{
@@ -69,12 +73,65 @@
 						"token",
 						""
 					]
-				}
+				},
+				"description": "Request OAuth2 access token to make API calls.  \nThis is first step to work with the API. The token valid for \"expires_in\" seconds (value in the token) hence there is no need to request new token within this period."
 			},
-			"response": []
+			"response": [
+				{
+					"name": "1. Get token Client Creds",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "{{oauth_client}}",
+									"description": "Client ID from \"API keys\" in open.plantbook.io UI",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{oauth_client_secret}}",
+									"description": "Client Secret from \"API keys\" in open.plantbook.io UI",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "read",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/token/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"token",
+								""
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"access_token\": \"HZzB1P....PrDYxYO2Mt\",\n    \"expires_in\": 86400,\n    \"token_type\": \"Bearer\",\n    \"scope\": \"read write\"\n}"
+				}
+			]
 		},
 		{
-			"name": "2. Search Plant",
+			"name": "2. Plant Search",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -93,14 +150,7 @@
 				"header": [],
 				"body": {
 					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "search",
-							"value": "rose",
-							"type": "text",
-							"disabled": true
-						}
-					]
+					"formdata": []
 				},
 				"url": {
 					"raw": "{{url}}/api/v1/plant/search?alias=acer&limit=10&offset=20",
@@ -116,20 +166,81 @@
 					"query": [
 						{
 							"key": "alias",
-							"value": "acer"
+							"value": "acer",
+							"description": "search string"
 						},
 						{
 							"key": "limit",
-							"value": "10"
+							"value": "10",
+							"description": "number of entries in the result"
 						},
 						{
 							"key": "offset",
-							"value": "20"
+							"value": "20",
+							"description": "results offset"
+						},
+						{
+							"key": "userplant",
+							"value": "true",
+							"description": "True - search and return only user-plants, False - search and return only public-plants, absent - combined search user and public - return deduplicated result",
+							"disabled": true
 						}
 					]
-				}
+				},
+				"description": "# Search plants by text\nSearch any occurrences of text in \"display_pid\" and \"alias\" fields.\n\n# Query parameters:\n* 'alias' - search string. This parameter is mandatory except when userplant=true. In this case endpoint returns all user's user-plants.\n\n* 'userplant' - user/public plants search selector:\n    true - search and return only user-plants,\n    false - search and return only public-plants,\nif omitted - combined search across user and public plants - returns deduplicated result\n\n* Pagination parameters: limit=X offset=Y  [see here][ref].\n[ref]: https://www.django-rest-framework.org/api-guide/pagination/#limitoffsetpagination\n\nDeduplication algorithm works as:\n1. Search public-plants with a search string.\n2. Search user-plants with a search string.\n3. Exclude user-plants from public-plants list.\n4. Also exclude public-plants which exist in user-plants but does not match search string.\n5. Combine user-plants and public-plants in one list."
 			},
-			"response": []
+			"response": [
+				{
+					"name": "2. Plant Search",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/plant/search?alias=acer&limit=10&offset=20",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"plant",
+								"search"
+							],
+							"query": [
+								{
+									"key": "alias",
+									"value": "acer",
+									"description": "search string"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "number of entries in the result"
+								},
+								{
+									"key": "offset",
+									"value": "20",
+									"description": "results offset"
+								},
+								{
+									"key": "userplant",
+									"value": "true",
+									"description": "True - search and return only user-plants, False - search and return only public-plants, absent - combined search user and public - return deduplicated result",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"count\": 38,\n    \"next\": \"http://localhost:8000/api/v1/plant/search?alias=acer&limit=3&offset=23\",\n    \"previous\": \"http://localhost:8000/api/v1/plant/search?alias=acer&limit=3&offset=17\",\n    \"results\": [\n        {\n            \"pid\": \"acer pseudoplatanus\",\n            \"display_pid\": \"Acer pseudoplatanus\",\n            \"alias\": \"acer pseudoplatanus\",\n            \"category\": \"boom\"\n        },\n        {\n            \"pid\": \"acer rubrum\",\n            \"display_pid\": \"Acer rubrum\",\n            \"alias\": \"acer rubrum\",\n            \"category\": \"Aceraceae, Acer\"\n        },\n        {\n            \"pid\": \"acer rubrum 'franksred red sunset'\",\n            \"display_pid\": \"Acer rubrum 'Franksred Red Sunset'\",\n            \"alias\": \"acer rubrum franksred red sunset\",\n            \"category\": \"Aceraceae, Acer\"\n        }\n    ]\n}"
+				}
+			]
 		},
 		{
 			"name": "3. Plant Details by Pid",
@@ -147,7 +258,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/api/v1/plant/detail/acer pseudoplatanus/",
+					"raw": "{{url}}/api/v1/plant/detail/acer buergerianum/",
 					"host": [
 						"{{url}}"
 					],
@@ -156,12 +267,39 @@
 						"v1",
 						"plant",
 						"detail",
-						"acer pseudoplatanus",
+						"acer buergerianum",
 						""
 					]
-				}
+				},
+				"description": "# Get plant details\nRetrieve plant details using \"pid\" (Plant ID)\nas: /api/v1/plant/detail/pid/\n\nE.g.:\n/api/v1/plant/detail/acer buergerianum/\n\n* Trialing slash is required!\n* Result will include {\"user_plant\": True} attribute if the plant is from user-plants."
 			},
-			"response": []
+			"response": [
+				{
+					"name": "3. Plant Details by Pid",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/plant/detail/acer buergerianum/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"plant",
+								"detail",
+								"acer buergerianum",
+								""
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"pid\": \"acer buergerianum\",\n    \"display_pid\": \"Acer buergerianum\",\n    \"alias\": \"acer buergerianum\",\n    \"category\": \"Aceraceae, Acer\",\n    \"max_light_mmol\": 7200,\n    \"min_light_mmol\": 3000,\n    \"max_light_lux\": 75000,\n    \"min_light_lux\": 2800,\n    \"max_temp\": 35,\n    \"min_temp\": 5,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 30,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 15,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/acer%20buergerianum.jpg\"\n}"
+				}
+			]
 		},
 		{
 			"name": "CREATE Plant",
@@ -180,7 +318,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"display_pid\": \"Solanum lycopersicum\",\n    \"alias\": \"Tomato\",\n    \"max_light_mmol\": 7600,\n    \"min_light_mmol\": 3200,\n    \"max_light_lux\": 55000,\n    \"min_light_lux\": 3000,\n    \"max_temp\": 33,\n    \"min_temp\": 12,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 15,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 20,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350\n}",
+					"raw": "{\n    \"display_pid\": \"Solanum lycopersicum\",\n    \"alias\": \"Tomato\",\n    \"category\": \"Tomato category\",\n    \"max_light_mmol\": 7600,\n    \"min_light_mmol\": 3200,\n    \"max_light_lux\": 55000,\n    \"min_light_lux\": 3000,\n    \"max_temp\": 33,\n    \"min_temp\": 12,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 15,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 20,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -198,9 +336,43 @@
 						"plant",
 						"create"
 					]
-				}
+				},
+				"description": "# Create new user plant or modify public plant.\n\nAccept JSON payload with parameters. See example.\n\n## Mandatory attributes:\n    <display_pid> - Scientific name of the plant. Based on this attribute <pid> (Plant ID) attribute will be automatically generated by lowering case of this attribute.\n    E.g: <display_pid>=\"Tomato Red\" will result in <pid>=\"tomato red\". See postman example for details.\n\nAll omitted non-mandatory attributes will have null value.\n\n\n## Returns:\n    201 - Successfully created.\n    409 - Plant already exists either in user DB or main DB.\n    400 - Malformed request e.g. if a mandatory attribute is not provided."
 			},
-			"response": []
+			"response": [
+				{
+					"name": "CREATE Plant",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"display_pid\": \"Solanum lycopersicum\",\n    \"alias\": \"Tomato\",\n    \"category\": \"Tomato category\",\n    \"max_light_mmol\": 7600,\n    \"min_light_mmol\": 3200,\n    \"max_light_lux\": 55000,\n    \"min_light_lux\": 3000,\n    \"max_temp\": 33,\n    \"min_temp\": 12,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 15,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 20,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/plant/create",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"plant",
+								"create"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"pid\": \"solanum lycopersicum\",\n    \"display_pid\": \"Solanum lycopersicum\",\n    \"alias\": \"Tomato\",\n    \"category\": \"Tomato category\",\n    \"max_light_mmol\": 7600,\n    \"min_light_mmol\": 3200,\n    \"max_light_lux\": 55000,\n    \"min_light_lux\": 3000,\n    \"max_temp\": 33,\n    \"min_temp\": 12,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 15,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 20,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/solanum%20lycopersicum.jpg\",\n    \"user_plant\": true\n}"
+				}
+			]
 		},
 		{
 			"name": "DELETE Plant",
@@ -236,20 +408,78 @@
 						"v1",
 						"plant",
 						"delete"
-					],
-					"query": [
-						{
-							"key": "pid",
-							"value": "dddd",
-							"disabled": true
-						}
 					]
-				}
+				},
+				"description": "# Delete plant\n\nDelete plant from user-plants. Public-plants cannot be removed.\n\n## Mandatory attributes:\n    \"pid\" - Plant ID - unique plant identifier. Case SENSITIVE!\n    \n## Return:\n    204 - Successfully deleted.\n    404 - Plant does not exist in user DB.\n    400 - Malformed request e.g. if a mandatory attribute is not provided.    \n\n## Known issue:\nIt does not handle omitted mandatory attribute correctly and always return 404 Not Found even if \"pid\" is absent."
 			},
-			"response": []
+			"response": [
+				{
+					"name": "DELETE Plant",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pid\": \"solanum lycopersicum\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/plant/delete",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"plant",
+								"delete"
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 18 Sep 2022 10:59:01 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.9.13"
+						},
+						{
+							"key": "Allow",
+							"value": "DELETE, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "0"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": null
+				}
+			]
 		},
 		{
-			"name": "UPDATE Plant PATCH",
+			"name": "UPDATE Plant",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -265,7 +495,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"pid\": \"solanum lycopersicum\",\n    \"max_light_mmol\": 1111,\n    \"min_light_mmol\": 2222,\n    \"max_light_lux\": 4444,\n    \"min_light_lux\": 3333,\n    \"max_temp\": 66,\n    \"min_temp\": 55\n}",
+					"raw": "{\n    \"pid\": \"acer pseudoplatanus\",\n    \"max_light_mmol\": 1111,\n    \"min_light_mmol\": 2222,\n    \"max_light_lux\": 4444,\n    \"min_light_lux\": 3333,\n    \"max_temp\": 66,\n    \"min_temp\": 55\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -283,9 +513,43 @@
 						"plant",
 						"update"
 					]
-				}
+				},
+				"description": "# Update plant\n\nMethod updates either user-plant or public-plant using JSON payload.\nUser-plant is attempted to update first. If user-plant not found then API searches 'pid' in public-plants. If found in public-plants then the public plant will be cloned and saved as user-plant with requested changes.\n\nEndpoint supports PATCH (partial update - updates only provided attributes), PUT is not supported\n\n## Mandatory attributes:\n\n```\n- \"pid\" - Plant ID is unique plant identifier. Case SENSITIVE!\n- at least 1 field with plant's attribute is required. This is to avoid dull duplicates.\n```\n\n## Returns:\n\n```\n200 - Successfully updated.\n404 - Plant exist neither in user-plants nor in public-plants\n400 - Malformed request e.g. if a mandatory attribute is not provided. \n\n```"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "UPDATE Plant",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pid\": \"acer pseudoplatanus\",\n    \"max_light_mmol\": 1111,\n    \"min_light_mmol\": 2222,\n    \"max_light_lux\": 4444,\n    \"min_light_lux\": 3333,\n    \"max_temp\": 66,\n    \"min_temp\": 55\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/plant/update",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"plant",
+								"update"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"pid\": \"acer pseudoplatanus\",\n    \"display_pid\": \"Acer pseudoplatanus\",\n    \"alias\": \"acer pseudoplatanus\",\n    \"category\": \"boom\",\n    \"max_light_mmol\": 1111,\n    \"min_light_mmol\": 2222,\n    \"max_light_lux\": 4444,\n    \"min_light_lux\": 3333,\n    \"max_temp\": 66,\n    \"min_temp\": 55,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 30,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 15,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/acer%20pseudoplatanus.jpg\",\n    \"user_plant\": true\n}"
+				}
+			]
 		}
 	],
 	"event": [
