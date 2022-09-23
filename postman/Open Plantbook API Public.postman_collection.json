@@ -271,11 +271,11 @@
 						""
 					]
 				},
-				"description": "# Get plant details\nRetrieve plant details using \"pid\" (Plant ID)\nas: /api/v1/plant/detail/pid/\n\nE.g.:\n/api/v1/plant/detail/acer buergerianum/\n\n* Trialing slash is required!\n* Result will include {\"user_plant\": True} attribute if the plant is from user-plants."
+				"description": "## Get plant details\nRetrieve plant details using \"pid\" (Plant ID) as: /api/v1/plant/detail/pid/\n\nE.g.:\n/api/v1/plant/detail/acer buergerianum/\n\nHow it works:\n* Endpoint searches user-plants first. If found then returns the user plant and add a field {\"user_plant\": True}\n* If no user plants found then it searches public plants. If found the return public plant without adding extra field \"user_plant\".\n\n\n* Trialing slash is required!\n* Result will include {\"user_plant\": True} attribute if the plant is from user-plants."
 			},
 			"response": [
 				{
-					"name": "3. Plant Details by Pid",
+					"name": "Plant Details from Public plants",
 					"originalRequest": {
 						"method": "GET",
 						"header": [],
@@ -298,6 +298,70 @@
 					"header": null,
 					"cookie": [],
 					"body": "{\n    \"pid\": \"acer buergerianum\",\n    \"display_pid\": \"Acer buergerianum\",\n    \"alias\": \"acer buergerianum\",\n    \"category\": \"Aceraceae, Acer\",\n    \"max_light_mmol\": 7200,\n    \"min_light_mmol\": 3000,\n    \"max_light_lux\": 75000,\n    \"min_light_lux\": 2800,\n    \"max_temp\": 35,\n    \"min_temp\": 5,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 30,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 15,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/acer%20buergerianum.jpg\"\n}"
+				},
+				{
+					"name": "Plant Details from User plants",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/plant/detail/alcea 'carmine roset'/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"plant",
+								"detail",
+								"alcea 'carmine roset'",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 23 Sep 2022 09:29:36 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.9.14"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, HEAD, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "447"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"pid\": \"alcea 'carmine roset'\",\n    \"display_pid\": \"Alcea 'Carmine Roset'\",\n    \"alias\": \"alcea carmine roset\",\n    \"category\": \"dfghfdgdf\",\n    \"max_light_mmol\": 1111,\n    \"min_light_mmol\": 2500,\n    \"max_light_lux\": 30000,\n    \"min_light_lux\": 2500,\n    \"max_temp\": 32,\n    \"min_temp\": 10,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 30,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 15,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/alcea%20%27carmine%20roset%27.jpg\",\n    \"user_plant\": true\n}"
 				}
 			]
 		},
