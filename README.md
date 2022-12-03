@@ -15,7 +15,8 @@ In order to use this API you need to login to Open Plantbook web UI at https://o
 
 Ability to share and browse Plants' sensor data. This is completion of phase one. 
 The feature will allow users to share their own and see other users plants' sensor data. For example, if you grow Rose in Norway then you will be able to see environment conditions where these Roses are grown around the world. Moreover, you are not limited to the plants you have, and you will be able to see all users plants sensor’s data which Plantbook have been collected. It will include location (a country and perhaps city) where a particular plant grows bundled with its sensor data. The motivation for users to share their plant’s sensor data is you will be able to see others data if you are sharing yours. Displayed information will be anonymous and only include approximate location, sensor data and related plant.
-You can start development of your integration now. Sensor-data endpoints documentation [here](https://documenter.getpostman.com/view/12627470/TVsxBRjD#9728f561-a05b-4886-ba29-25722819150c). Any feedback is always welcome. 
+You can start development of your integration now. Sensor-data endpoints documentation [here](https://documenter.getpostman.com/view/12627470/TVsxBRjD#9728f561-a05b-4886-ba29-25722819150c). Any feedback is always welcome.
+Next phase is to introduce UI to browse uploaded senor data from around the world. 
 
 API updates and changes (see [API documentation](https://documenter.getpostman.com/view/12627470/TVsxBRjD) for details):
 - Introduced 2 new end-points for sensor-data uploading. (see [API documentation](https://documenter.getpostman.com/view/12627470/TVsxBRjD#9728f561-a05b-4886-ba29-25722819150c) for details)
