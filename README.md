@@ -29,7 +29,7 @@ UI updates:
 
 Maintenance:
 - Updated web framework and libraries to secure versions.
-- Improved internal reliability and managability
+- Improved internal reliability and manageability
 
 ### release 2209 (19 September 2022)
 UI updates:
