@@ -10,6 +10,26 @@ In order to use this API you need to login to Open Plantbook web UI at https://o
 
 ## WebUI and API Release notes:
 
+### release 2211 (30 November 2022)
+**Introduction of a major new feature**
+
+Ability to share and browse Plants' sensor data. This is completion of phase one. 
+The feature will allow users to share their own and see other users plants' sensor data. For example, if you grow Rose in Norway then you will be able to see environment conditions where these Roses are grown around the world. Moreover, you are not limited to the plants you have, and you will be able to see all users plants sensor’s data which Plantbook have been collected. It will include location (a country and perhaps city) where a particular plant grows bundled with its sensor data. The motivation for users to share their plant’s sensor data is you will be able to see others data if you are sharing yours. Displayed information will be anonymous and only include approximate location, sensor data and related plant.
+You can start development of your integration now. Sensor-data endpoints documentation [here](https://documenter.getpostman.com/view/12627470/TVsxBRjD#9728f561-a05b-4886-ba29-25722819150c). Any feedback is always welcome. 
+
+API updates and changes (see [API documentation](https://documenter.getpostman.com/view/12627470/TVsxBRjD) for details):
+- Introduced 2 new end-points for sensor-data uploading. (see [API documentation](https://documenter.getpostman.com/view/12627470/TVsxBRjD#9728f561-a05b-4886-ba29-25722819150c) for details)
+- POTENTIAL BREAKING CHANGE: Partly standardized API error responses to comply with JSON API standard. All new and some existing endpoints use new format now. In next release, all endpoints will use it. It only affects JSON response payload. Error codes are the same. (see [format details](https://drf-standardized-errors.readthedocs.io/en/latest/error_response.html)) 
+- Minor bug fixes
+
+UI updates:
+- Added Menu and Page-placeholder for "Sensor Data"
+- Minor UI improvements
+
+Maintenance:
+- Updated web framework and libraries to secure versions.
+- Improved internal reliability and managability
+
 ### release 2209 (19 September 2022)
 UI updates:
 - Added validation when saving a modified Public Plant. User cannot save modified public plant if its no attributes have been modified.
