@@ -80,13 +80,12 @@
 									}
 								},
 								"url": {
-									"raw": "https://open.plantbook.io/api/v1/sensor-data/instance",
-									"protocol": "https",
+									"raw": "http://localhost:8000/api/v1/sensor-data/instance",
+									"protocol": "http",
 									"host": [
-										"open",
-										"plantbook",
-										"io"
+										"localhost"
 									],
+									"port": "8000",
 									"path": [
 										"api",
 										"v1",
@@ -199,13 +198,12 @@
 									}
 								},
 								"url": {
-									"raw": "https://open.plantbook.io/api/v1/sensor-data/upload",
-									"protocol": "https",
+									"raw": "http://localhost:8000/api/v1/sensor-data/upload",
+									"protocol": "http",
 									"host": [
-										"open",
-										"plantbook",
-										"io"
+										"localhost"
 									],
+									"port": "8000",
 									"path": [
 										"api",
 										"v1",
@@ -265,78 +263,33 @@
 			"description": "Plants' sensors data upload API calls.\n\n**NOTE:** This set of API calls is set as experimental at this point in time. This means that it may be changed in near future as this is feature is still in development. Once the development is completed the experimental flag will be removed."
 		},
 		{
-			"name": "1. Get token - Client-Credentials OAuth Grant",
-			"event": [
+			"name": "1. Authentication",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"if (pm.response.code == 200) {",
-							"    pm.test(\"Get inital access token\", function () {",
-							"        var response = pm.response.json();",
-							"        pm.collectionVariables.set(\"accessToken\", response.access_token);",
-							"    });",
-							"}"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"strictSSL": true
-			},
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
+					"name": "OAuth2 Client-Credentials OAuth Grant - Get token",
+					"event": [
 						{
-							"key": "grant_type",
-							"value": "client_credentials",
-							"type": "text"
-						},
-						{
-							"key": "client_id",
-							"value": "{{oauth_client}}",
-							"description": "Client ID from \"API keys\" in open.plantbook.io UI",
-							"type": "text"
-						},
-						{
-							"key": "client_secret",
-							"value": "{{oauth_client_secret}}",
-							"description": "Client Secret from \"API keys\" in open.plantbook.io UI",
-							"type": "text"
-						},
-						{
-							"key": "scope",
-							"value": "read",
-							"type": "text",
-							"disabled": true
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code == 200) {",
+									"    pm.test(\"Get inital access token\", function () {",
+									"        var response = pm.response.json();",
+									"        pm.collectionVariables.set(\"accessToken\", response.access_token);",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
 						}
-					]
-				},
-				"url": {
-					"raw": "{{url}}/api/v1/token/",
-					"host": [
-						"{{url}}"
 					],
-					"path": [
-						"api",
-						"v1",
-						"token",
-						""
-					]
-				},
-				"description": "Request OAuth2 access token to make API calls.  \nThis is first step to work with the API. The token valid for \"expires_in\" seconds (value in the token) hence there is no need to request new token within this period."
-			},
-			"response": [
-				{
-					"name": "1. Get token Client Creds",
-					"originalRequest": {
+					"protocolProfileBehavior": {
+						"strictSSL": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -349,13 +302,13 @@
 								},
 								{
 									"key": "client_id",
-									"value": "EpEKLfEYv77eaohN12B9L7bhlq0SfibPOjN1yGvQ",
+									"value": "{{oauth_client}}",
 									"description": "Client ID from \"API keys\" in open.plantbook.io UI",
 									"type": "text"
 								},
 								{
 									"key": "client_secret",
-									"value": "nCfPFfwoWhRyWvCnskkrqzEDhdiMNtvMQhUvxPNAfSrL1gqMw4dF3Bd2gPtH93m7w5ol88mNZcNqtb7EWgv4zFPHxKdqUM1OvW4YSEGPwEdBgGfguylrpTZ9uZ2WNDq3",
+									"value": "{{oauth_client_secret}}",
 									"description": "Client Secret from \"API keys\" in open.plantbook.io UI",
 									"type": "text"
 								},
@@ -368,12 +321,9 @@
 							]
 						},
 						"url": {
-							"raw": "https://open.plantbook.io/api/v1/token/",
-							"protocol": "https",
+							"raw": "{{url}}/api/v1/token/",
 							"host": [
-								"open",
-								"plantbook",
-								"io"
+								"{{url}}"
 							],
 							"path": [
 								"api",
@@ -381,14 +331,67 @@
 								"token",
 								""
 							]
-						}
+						},
+						"description": "Request OAuth2 access token to make API calls.  \nThis is first step to work with the API. The token valid for \"expires_in\" seconds (value in the token) hence there is no need to request new token within this period."
 					},
-					"_postman_previewlanguage": "json",
-					"header": null,
-					"cookie": [],
-					"body": "{\n    \"access_token\": \"HZzB1P....PrDYxYO2Mt\",\n    \"expires_in\": 86400,\n    \"token_type\": \"Bearer\",\n    \"scope\": \"read write\"\n}"
+					"response": [
+						{
+							"name": "1. Get token Client Creds",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "text"
+										},
+										{
+											"key": "client_id",
+											"value": "",
+											"description": "Client ID from \"API keys\" in open.plantbook.io UI",
+											"type": "text"
+										},
+										{
+											"key": "client_secret",
+											"value": "",
+											"description": "Client Secret from \"API keys\" in open.plantbook.io UI",
+											"type": "text"
+										},
+										{
+											"key": "scope",
+											"value": "read",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/v1/token/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"token",
+										""
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"access_token\": \"HZzB1P....PrDYxYO2Mt\",\n    \"expires_in\": 86400,\n    \"token_type\": \"Bearer\",\n    \"scope\": \"read write\"\n}"
+						}
+					]
 				}
-			]
+			],
+			"description": "API supports two types of authentication:\n* OAuth2 Client Credentials \n* API-key\n\n**1) \"OAuth2 Client Credentials grant\".**\n\n**NOTE:** This method is supported across all endpoints.\n\nThe sequence:\n- Generate ClientID and ClientSecret (client credentials) in UI.\n- Using above Client's credentials, get OAuth2 Bearer token from API's token endpoint. The token is valid for limited time. So you need to request new token once it is expired (or prior any request for simplicity).\n- Call API with the issued \"Bearer\" token. It is done with HTTP header \"Authorization\" and value of header consist key word \"Bearer\" and then token value.\n```\nAuthorization: Bearer NjJeh5Ew9arEiJKLU9zJELukbxebew\n```\n\nMore information about OAuth \"Client Credentials\" grant: https://docs.pingidentity.com/bundle/developer/page/ixj1601508083821.html\n\n**2) \"API-key\" authentication.**\n\n**NOTE** API-key is only supported for \"plant/search\" and \"plant/detail\" endpoints.\n\nThis is simplified authentication based on permanent token which is generated when you enable \"API-key\" authentication in UI. This token will never expired and can be used infinite number of times. \nThe sequence:\n- Enable \"Token\" authentication and take copy of permanent API-key token.\n- Call API with the API-key token.\nIt is done with HTTP header \"Authorization\". The difference with OAuth authentication is that the KEY word is \"Token\"(!) and then token value.\n```\nAuthorization: Token 228d654c09c6a17006d5421eba175a9a15dca07e\n```"
 		},
 		{
 			"name": "2. Plant Search",
@@ -451,10 +454,76 @@
 			},
 			"response": [
 				{
-					"name": "2. Plant Search",
+					"name": "Plant Search with OAuth Bearer token",
 					"originalRequest": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer NjJeh5Ew9arEiJKLU9zJELukbxebew",
+								"description": "Token value received from /api/v1/token/ endpoint with keyword \"Bearer\"",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/plant/search?alias=acer&limit=10&offset=20",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"plant",
+								"search"
+							],
+							"query": [
+								{
+									"key": "alias",
+									"value": "acer",
+									"description": "search string"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "number of entries in the result"
+								},
+								{
+									"key": "offset",
+									"value": "20",
+									"description": "results offset"
+								},
+								{
+									"key": "userplant",
+									"value": "true",
+									"description": "True - search and return only user-plants, False - search and return only public-plants, absent - combined search user and public - return deduplicated result",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"count\": 38,\n    \"next\": \"http://localhost:8000/api/v1/plant/search?alias=acer&limit=3&offset=23\",\n    \"previous\": \"http://localhost:8000/api/v1/plant/search?alias=acer&limit=3&offset=17\",\n    \"results\": [\n        {\n            \"pid\": \"acer pseudoplatanus\",\n            \"display_pid\": \"Acer pseudoplatanus\",\n            \"alias\": \"acer pseudoplatanus\",\n            \"category\": \"boom\"\n        },\n        {\n            \"pid\": \"acer rubrum\",\n            \"display_pid\": \"Acer rubrum\",\n            \"alias\": \"acer rubrum\",\n            \"category\": \"Aceraceae, Acer\"\n        },\n        {\n            \"pid\": \"acer rubrum 'franksred red sunset'\",\n            \"display_pid\": \"Acer rubrum 'Franksred Red Sunset'\",\n            \"alias\": \"acer rubrum franksred red sunset\",\n            \"category\": \"Aceraceae, Acer\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "Plant Search with API-key",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 228d654c09c6a17006d5421eba175a9a15dca07e",
+								"description": "API-key token value from UI with keyword \"Token\"",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "formdata",
 							"formdata": []
@@ -495,10 +564,10 @@
 							]
 						}
 					},
-					"_postman_previewlanguage": "json",
+					"_postman_previewlanguage": null,
 					"header": null,
 					"cookie": [],
-					"body": "{\n    \"count\": 38,\n    \"next\": \"http://localhost:8000/api/v1/plant/search?alias=acer&limit=3&offset=23\",\n    \"previous\": \"http://localhost:8000/api/v1/plant/search?alias=acer&limit=3&offset=17\",\n    \"results\": [\n        {\n            \"pid\": \"acer pseudoplatanus\",\n            \"display_pid\": \"Acer pseudoplatanus\",\n            \"alias\": \"acer pseudoplatanus\",\n            \"category\": \"boom\"\n        },\n        {\n            \"pid\": \"acer rubrum\",\n            \"display_pid\": \"Acer rubrum\",\n            \"alias\": \"acer rubrum\",\n            \"category\": \"Aceraceae, Acer\"\n        },\n        {\n            \"pid\": \"acer rubrum 'franksred red sunset'\",\n            \"display_pid\": \"Acer rubrum 'Franksred Red Sunset'\",\n            \"alias\": \"acer rubrum franksred red sunset\",\n            \"category\": \"Aceraceae, Acer\"\n        }\n    ]\n}"
+					"body": null
 				}
 			]
 		},

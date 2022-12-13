@@ -10,6 +10,13 @@ In order to use this API you need to login to Open Plantbook web UI at https://o
 
 ## WebUI and API Release notes:
 
+### release 2212 (13 December 2022)
+**API-key authentication and CORS header**
+
+- Introduced API-key authentication for Plant's "search" and "detail" endpoints including UI to enable it
+- Enabled CORS headers for all "plant" endpoints so it is now possible to make calls from front-end with API-key
+- Authentication related documentation updated - see [Authentication](https://documenter.getpostman.com/view/12627470/TVsxBRjD#56623c2d-7182-4b70-b31c-5cb8ed7b38c2)
+
 ### release 2211 (30 November 2022)
 **Introduction of a major new feature**
 
