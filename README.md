@@ -10,6 +10,15 @@ In order to use this API you need to login to Open Plantbook web UI at https://o
 
 ## WebUI and API Release notes:
 
+### release 2302 (18 February 2023)
+**Fully functional Sensor-Data UI**
+UI is fully wired using Grafana to display Sensor's data.
+
+- Added initial Grafana dashboard for sensor data
+- Changed "supported measurements" for Sensor-upload end-point to be the same as rest of API
+- Rework to handle internal asynchronous operations
+- Internal platform resilience works
+
 ### release 2212 (13 December 2022)
 **API-key authentication and CORS header**
 
