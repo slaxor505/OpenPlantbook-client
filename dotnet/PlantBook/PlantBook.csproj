@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  
+    <Description>This library adds support for plantbook.io</Description>
+    <Company>Denxorz</Company>
+    <Authors>Dennis Geldhof</Authors>
+    <Version>1.0.0</Version>    
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/denxorz/PlantBook</PackageProjectUrl>
+    <Copyright>Copyright @ Dennis Geldhof 2023</Copyright>    
+    <PackageIconUrl></PackageIconUrl>
+    <RepositoryUrl>https://github.com/denxorz/PlantBook</RepositoryUrl>
+    <PackageTags>PlantBook Plant Plants</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>PlantBook</PackageId>
+    <PackageIcon>icons8-potted-plant-48.png</PackageIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\icons8-potted-plant-48.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Flurl.Http" Version="3.2.4" />
+  </ItemGroup>
+
+</Project>
