@@ -116,7 +116,7 @@ def upload_sensor_data():
 
     custom_id = "Sample instance of " + pid
 
-    # make the request to create plant instance for the sensor data
+    # Setting required parameters
     client_id = os.environ["CLIENT_ID"]
     client_secret = os.environ["CLIENT_SECRET"]
 
@@ -135,12 +135,14 @@ def upload_sensor_data():
     # *** Upload data
     instance_id = response.json().get('id')
 
-    # create timeseries for every measurement
+    # Create timeseries for every measurement
     temp = TimeSeries(identifier=instance_id, name="temp")
     soil_moist = TimeSeries(identifier=instance_id, name="soil_moist")
     soil_ec = TimeSeries(identifier=instance_id, name="soil_ec")
     light_lux = TimeSeries(identifier=instance_id, name="light_lux")
 
+    # parse generated fake data creating Record in corresponding TimeSeries
+    # "ts" here is TimeStamp
     for ts, values in df.iterrows():
         temp.insert(TsRecord(ts, values[0]))
         soil_moist.insert(TsRecord(ts, values[1]))
