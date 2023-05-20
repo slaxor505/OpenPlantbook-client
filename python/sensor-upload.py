@@ -1,17 +1,21 @@
 """
-This script uses the Open PlantBook API to query information about plants.
-
-Language: Python
-PlantBook API (https://open.plantbook.io/)
+Example on How to upload sensor's data to OpenPlantbook API.
+This example uses fake generated sensor data of 4 measurements related to a Plant
+The example uses json_timeseries library https://pypi.org/project/json-timeseries/
+In the example, Plantbook Client creds are set from env variables
 """
-
-import os
 import json
+import os
+
+import numpy as np
+import pandas as pd
 import requests
-import urllib.parse
+from json_timeseries import TimeSeries, TsRecord, JtsDocument
 
 
-
+# depends on PlantBookAPI.py in the same directory
+# from ..PlantBookAPI.PlantBookAPI import PlantBookAPI
+# Just copy/pasted this class from another example - it's ugly but will refactor using https://pypi.org/project/pyopenplantbook/ later
 class PlantBookAPI(object):
     BASE_URL = "https://open.plantbook.io/api/v1"
 
@@ -29,7 +33,6 @@ class PlantBookAPI(object):
         token = os.environ.get("PLANTBOOK_ACCESS_TOKEN", None)
         if token is not None:
             self._create_session(token)
-
 
     def login(self):
         """
@@ -53,7 +56,6 @@ class PlantBookAPI(object):
         self._create_session(r.json()["access_token"])
         return True
 
-
     def _create_session(self, token):
         """
         Create a session with the PlantBook API using the access_token.
@@ -74,8 +76,7 @@ class PlantBookAPI(object):
     #
     # API docs for all endpoints and arguments:
     # https://documenter.getpostman.com/view/12627470/TVsxBRjD#intro
-    
-    
+
     def get(self, endpoint, **kwargs):
         """
         Make a GET request to the PlantBook API.
@@ -94,10 +95,64 @@ class PlantBookAPI(object):
         :return: The API response.
         """
         url = f"{PlantBookAPI.BASE_URL}{endpoint}"
-        return self.session.post(url, params=kwargs)
+        return self.session.post(url, **kwargs)
 
 
-# Uncomment to test.
-# client = PlantBookAPI(os.environ["CLIENT_ID"], os.environ["CLIENT_SECRET"])
-# print(json.dumps(client.get("/plant/search", alias="acer", limit=5).json()))
+def upload_sensor_data():
+    """
+    Upload sensor-data
+    """
 
+    NUMBER_OF_PERIODS = 2
+
+    # generate fake data for this example
+    pid = "abelia chinensis"
+    location_country = "Australia"
+
+    dti = pd.date_range(pd.Timestamp.now(tz="Australia/Sydney"), periods=NUMBER_OF_PERIODS, freq="15min")
+
+    # generate fake values - 4 columns to provide 4 values for the following measurements: temp, soil_moist, soil_ec, light_lux
+    df = pd.DataFrame(np.random.default_rng().uniform(100, 1000, (NUMBER_OF_PERIODS, 4)), index=dti).astype(int)
+
+    custom_id = "Sample instance of " + pid
+
+    # make the request to create plant instance for the sensor data
+    client_id = os.environ["CLIENT_ID"]
+    client_secret = os.environ["CLIENT_SECRET"]
+
+    client = PlantBookAPI(client_id, client_secret)
+    client.login()
+
+    # *** Create Plant instance
+    payload = {
+        "custom_id": custom_id,
+        "pid": pid,
+        "location_country": location_country
+    }
+
+    response = client.post("/sensor-data/instance", json=payload)
+
+    # *** Upload data
+    instance_id = response.json().get('id')
+
+    # create timeseries for every measurement
+    temp = TimeSeries(identifier=instance_id, name="temp")
+    soil_moist = TimeSeries(identifier=instance_id, name="soil_moist")
+    soil_ec = TimeSeries(identifier=instance_id, name="soil_ec")
+    light_lux = TimeSeries(identifier=instance_id, name="light_lux")
+
+    for ts, values in df.iterrows():
+        temp.insert(TsRecord(ts, values[0]))
+        soil_moist.insert(TsRecord(ts, values[1]))
+        soil_ec.insert(TsRecord(ts, values[2]))
+        light_lux.insert(TsRecord(ts, values[3]))
+
+    jts_doc = JtsDocument([temp, soil_moist, soil_ec, light_lux])
+
+    # Setting dry_run=True as it is not real data. Removing the parameter will upload real-data into OPB database
+    response = client.post("/sensor-data/upload" + "?dry_run=True", json=json.loads(jts_doc.toJSON()))
+
+    print(response)
+
+
+upload_sensor_data()

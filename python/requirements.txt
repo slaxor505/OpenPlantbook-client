@@ -1,4 +1,9 @@
+# older lib due to openssl dependency issue
+urllib3==1.26.6
+
 requests
 pyyaml
 tabulate
+
+json-timeseries
 
