@@ -1,5 +1,5 @@
 # OpenPlantbook-client
-This is repository for Open Plantbook API release notes, documentation and sample clients
+This is repository for Open Plantbook API release notes, documentation and sample clients.
 
 ## Requirements
 In order to use this API you need to login to Open Plantbook web UI at https://open.plantbook.io and generate API credentials. The credentials are client_id and client_secret. API authentication implements OAuth2 standard Client Credentials Grant flow.
@@ -9,6 +9,28 @@ In order to use this API you need to login to Open Plantbook web UI at https://o
 - [Web UI documentation](https://github.com/slaxor505/OpenPlantbook-client/wiki)
 
 ## WebUI and API Release notes:
+
+### release 2307 (25 July 2023)
+**Release highlights: Ability to browse and use other users' plants and submit request for a missing plant.**
+
+Our users have already created many plants and starting from this release others can benefit from it. If in UI "Browse DB" no plants (Public-plants) have been found then you can search in users' plants as well. In doing so you can then add (by cloning or linking) other users' plants to "My-plants" so they are available for your integrations.
+If the plant, you need, is still not found in users' plants, you can submit a request for the missing plant. These requests will help to find the most demanded missing plants, so we or the community can add them later. The plan is to expose these requests to all of our users so the community can help.  
+
+**All changes and new features:**
+- New UI Form to see plants' details and their images
+- Ability to Browse other users' plants (user-plants)
+- Ability to CLONE or LINK other users' plants (user-plants) to My-Plants
+- Ability to request missing plant
+- UI revamp, better navigation with breadcrumbs
+- Security and reliability updates
+- Released Python "json-timeseries" library to ease Sensor-data integration (see API docs)
+
+**Roadmap**
+- Ability to upload plants' pictures in UI
+- Allow to search users' plant (user-plants) via API
+- Ability to add and see multiple common names of the plants including in different national languages
+- Ability to add, modify and see general information about plants in UI and via API
+- Ability to specify alternative thresholds for different seasons of the year (summer, winter, etc.)
 
 ### release 2302 (18 February 2023)
 **Fully functional Sensor-Data UI**
