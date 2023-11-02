@@ -10,6 +10,11 @@ In order to use this API you need to login to Open Plantbook web UI at https://o
 
 ## WebUI and API Release notes:
 
+### October 2023
+
+Introducing [OpenPlantbook SDK for Python](https://github.com/slaxor505/openplantbook-sdk-py). 
+Using this SDK you can easily integrate your Python application with OpenPlantbook without wrestling with OAuth and API calls.
+
 ### release 2307 (25 July 2023)
 **Release highlights: Ability to browse and use other users' plants and submit request for a missing plant.**
 
