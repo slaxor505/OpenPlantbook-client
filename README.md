@@ -1,5 +1,5 @@
 # OpenPlantbook-client
-This is repository for Open Plantbook API release notes, documentation and sample clients.
+This is repository for Open Plantbook Cloud and Client release notes, documentation and sample clients.
 
 ## Requirements
 In order to use this API you need to login to Open Plantbook web UI at https://open.plantbook.io and generate API credentials. The credentials are client_id and client_secret. API authentication implements OAuth2 standard Client Credentials Grant flow.
@@ -8,7 +8,27 @@ In order to use this API you need to login to Open Plantbook web UI at https://o
 - [API documentation](https://documenter.getpostman.com/view/12627470/TVsxBRjD)
 - [Web UI documentation](https://github.com/slaxor505/OpenPlantbook-client/wiki)
 
-## WebUI and API Release notes:
+## OpenPlantbook Cloud release notes:
+
+### release 20240605 (5 June 2024)
+- Major Web framework upgrade
+- Components and libraries updated to the latest
+
+### release 20240601 (1 June 2024)
+- Sensor page now display live World Sensor Map where plants and its sensors can be mapped to countries
+- Removed Facebook login due to its restrict policies
+- Internal maintenance improvements
+
+### April 2024
+Introducing [OpenPlantbook Dotnet library](https://github.com/denxorz/OpenPlantbook-client-dotnet). 
+This library adds support of OpenPlantbook API for DotNet apps.
+
+### release 202401 (3 January 2024)
+- Improvements in Sensor-data API and functionality
+- Performance improvements for Grafana Dashboard
+- Changes location_country to ISO 2 char code including DB model and validation
+- Service reliability improvements
+- Web framework and libraries updates
 
 ### October 2023
 
@@ -28,7 +48,7 @@ If the plant, you need, is still not found in users' plants, you can submit a re
 - Ability to request missing plant
 - UI revamp, better navigation with breadcrumbs
 - Security and reliability updates
-- Released Python "json-timeseries" library to ease Sensor-data integration (see API docs)
+- Released Python [json_timeseries for Python](https://pypi.org/project/json-timeseries) library. The library supports [JTS spec](https://docs.eagle.io/en/latest/reference/historic/jts.html) and handles time series data using JSON. The library can be used to integrate with OpenPlantbook Sensor-data API. 
 
 **Roadmap**
 - Ability to upload plants' pictures in UI
@@ -133,6 +153,10 @@ Breaking changes in comparison with 1.0-RC:
 
 ## Client Release notes:
 
+### April 2024
+Introducing [OpenPlantbook Dotnet library](https://github.com/denxorz/OpenPlantbook-client-dotnet). 
+This library adds support of OpenPlantbook API for DotNet apps.
+
 ### version 1.0
 - Updated Postman collection:
     - built-in variables for easier use (See variables specific to the Collection)
@@ -148,7 +172,9 @@ Alternatively, you can use [API examples](https://documenter.getpostman.com/view
 
 ### Examples
 
-**For up to date examples see [API documentation](https://documenter.getpostman.com/view/12627470/TVsxBRjD) Below example may be outdated**
+For up to date examples see [API documentation](https://documenter.getpostman.com/view/12627470/TVsxBRjD)
+
+**NOTE:** *The below example may be outdated*
 
 #### Retrieve plant:
 
