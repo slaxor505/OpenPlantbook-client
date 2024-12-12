@@ -8,7 +8,24 @@ In order to use this API you need to login to Open Plantbook web UI at https://o
 - [API documentation](https://documenter.getpostman.com/view/12627470/TVsxBRjD)
 - [Web UI documentation](https://github.com/slaxor505/OpenPlantbook-client/wiki)
 
-## OpenPlantbook Cloud release notes:
+## Open Plantbook Cloud release notes:
+
+### release 202412 (11 December 2024)
+- Completely rebuild Public and User Plants Operations UI and Backend. Now operations are just simple and straight forward Edit & Copy. [Read more](https://github.com/slaxor505/OpenPlantbook-client/wiki/Plants-operations)
+- New Copy operation for own User-plants 
+- Browse User-plants now includes users' Copied/Cloned plants
+- Added auto-generated PID field to all Plant Operation forms for convenience
+- Updated text labels in Plant Operation forms
+- Changing "Scientific name" creates a new User-plant
+- Don't allow to modify display_pid when Edit plants
+- Internal updates
+- Changed license for this repository to MIT
+
+### release 202410 (27 October 2024)
+- Added PID to Plant Detail form
+- Fixed issue where empty field in JSON time series cause upload error. Now empty values are ignored since they are optional as per JSON Timeseries spec.
+- Adjusted some text messages in UI
+- Security updates
 
 ### release 20240605 (5 June 2024)
 - Major Web framework upgrade
@@ -151,7 +168,7 @@ Breaking changes in comparison with 1.0-RC:
 - Removed "id" from responses
 - Now to get plant details use api/v1/plant/detail/{pid} endpoint.
 
-## Client Release notes:
+## Open Plantbook API Release notes:
 
 ### April 2024
 Introducing [OpenPlantbook Dotnet library](https://github.com/denxorz/OpenPlantbook-client-dotnet). 
@@ -172,9 +189,9 @@ Alternatively, you can use [API examples](https://documenter.getpostman.com/view
 
 ### Examples
 
-For up to date examples see [API documentation](https://documenter.getpostman.com/view/12627470/TVsxBRjD)
+For up-to-date examples see [API documentation](https://documenter.getpostman.com/view/12627470/TVsxBRjD)
 
-**NOTE:** *The below example may be outdated*
+**NOTE:** *The below examples may be outdated*
 
 #### Retrieve plant:
 
