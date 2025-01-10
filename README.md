@@ -10,6 +10,12 @@ In order to use this API you need to login to Open Plantbook web UI at https://o
 
 ## Open Plantbook Cloud release notes:
 
+### release 202501 (8 January 2025)
+- Added ability to upload plant images in UI. Now you can upload images for your User-plants.
+- Added display_pid validation in UI and API
+- Internal updates
+- Framework and libraries updates
+
 ### release 202412 (11 December 2024)
 - Completely rebuild Public and User Plants Operations UI and Backend. Now operations are just simple and straight forward Edit & Copy. [Read more](https://github.com/slaxor505/OpenPlantbook-client/wiki/Plants-operations)
 - New Copy operation for own User-plants 
