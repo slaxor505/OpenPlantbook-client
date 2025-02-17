@@ -10,6 +10,10 @@ In order to use this API you need to login to Open Plantbook web UI at https://o
 
 ## Open Plantbook Cloud release notes:
 
+### release 202502 (17 February 2025)
+- Fixed issue when user can't delete User-plant if it has been copied by other users
+- Framework and libraries updates
+
 ### release 202501 (8 January 2025)
 - Added ability to upload plant images in UI. Now you can upload images for your User-plants.
 - Added display_pid validation in UI and API
