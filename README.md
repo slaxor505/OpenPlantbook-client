@@ -1,14 +1,29 @@
 # OpenPlantbook-client
-This is repository for Open Plantbook Cloud and Client release notes, documentation and sample clients.
+This is a repository for Open Plantbook Cloud and Client release notes, documentation and sample clients.
 
 ## Requirements
-In order to use this API you need to login to Open Plantbook web UI at https://open.plantbook.io and generate API credentials. The credentials are client_id and client_secret. API authentication implements OAuth2 standard Client Credentials Grant flow.
+To use this API you need to log in to Open Plantbook web UI at https://open.plantbook.io and generate API credentials. The credentials are client_id and client_secret. API authentication implements OAuth2 standard Client Credentials Grant flow.
 
 ## Documentation
 - [API documentation](https://documenter.getpostman.com/view/12627470/TVsxBRjD)
 - [Web UI documentation](https://github.com/slaxor505/OpenPlantbook-client/wiki)
 
 ## Open Plantbook Cloud release notes:
+
+### **COMING BREAKING CHANGE:** 
+API THROTTLING WILL BE ENABLED from 1 November 2025.
+API requests will be capped to 200 requests per user per day. This is only to prevent API usage abuse by bots and crawlers and preserve the service for other users.
+If you need more requests for any reason, please contact me.
+
+### release 202509 (8 September 2025)
+- New feature: International Common Names for both Public and User-plants
+- UI: Add Common Name forms have autocomplete suggestions to avoid typos and duplicates
+- UI: Browse Plants page now displays additional Common Names
+- UI: Added Plant's Origin field
+- UI: Updated Plant operations and Plant details pages to group fields by category
+- Both API and UI Plant Search now search across multilingual Common Names
+- Minor UI fixes and improvements
+- Security updates
 
 ### release 202502 (17 February 2025)
 - Fixed issue when user can't delete User-plant if it has been copied by other users
@@ -194,192 +209,8 @@ This library adds support of OpenPlantbook API for DotNet apps.
 - [home-assistant](https://www.home-assistant.io/) integration. [Plant Monitor component](https://github.com/Olen/homeassistant-plant) and [PlantCard](https://github.com/Olen/lovelace-flower-card) which leverage the component. Discussion of HASS forum [here](https://community.home-assistant.io/t/cloud-plant-db-with-api-for-plantcard/).
 
 ## Usage
-The easiest way to get familiar with API is to use Browsable API within Web UI. The link can be found within Docs section.
-Alternatively, you can use [API examples](https://documenter.getpostman.com/view/12627470/TVsxBRjD) in Postman. You need to install free Postman API tool: https://www.postman.com/ or use Postman online.
+The easiest way to get familiar with API is to try [API examples](https://documenter.getpostman.com/view/12627470/TVsxBRjD) in Postman. You can either install the free Postman API tool or use its Web version online: https://www.postman.com/
 
 ### Examples
-
 For up-to-date examples see [API documentation](https://documenter.getpostman.com/view/12627470/TVsxBRjD)
 
-**NOTE:** *The below examples may be outdated*
-
-#### Retrieve plant:
-
-1. Get API credentials from Web UI.
-
-2. Get access token using API credentials.
-```
-curl --request POST 'https://open.plantbook.io/api/v1/token/' \
---form 'grant_type=client_credentials' \
---form 'client_id=string_client_id_from_UI' \
---form 'client_secret=string_client_secret_from_UI'
-```
-Response will be:
-```
-{
-    "access_token": "token_string",
-    "expires_in": 2629800,
-    "token_type": "Bearer",
-    "scope": "read"
-}
-```
-This is token to access API. It will expire in 2629800 seconds = 1 month. It is ok to get a new token everytime.
-We will need "token_string" at next step.
-
-3. Make a Plant Search API call with 'Bearer Token' HTTP header:
-Query parameter ?alias=<search string> is required.
-```
-curl --request GET 'https://open.plantbook.io/api/v1/plant/search?alias=acanthus%20ilicifolius' \
---header 'Authorization: Bearer token_string'
-```
-From the response, you can to get Plant Id (pid) in order to get the plant details.
-```
-{
-    "count": 2,
-    "next": null,
-    "previous": null,
-    "results": [
-        {
-            "pid": "acanthus ilicifolius",
-            "display_pid": "Acanthus ilicifolius",
-            "alias": "acanthus ilicifolius"
-        },
-        {
-            "pid": "acanthus spinosus",
-            "display_pid": "Acanthus spinosus",
-            "alias": "acanthus ilicifolius"
-        }
-    ]
-}
-```
-4.  From previous step, take "pid" value of the desired plant and get the plant details with Bearer Token. 
-
-```
-curl --request GET 'https://open.plantbook.io/api/v1/plant/detail/acanthus ilicifolius/' \
---header 'Authorization: Bearer token_string'
-```
-```
-{
-    "pid": "acanthus ilicifolius",
-    "display_pid": "Acanthus ilicifolius",
-    "alias": "acanthus ilicifolius",
-    "max_light_mmol": 2500,
-    "min_light_mmol": 1200,
-    "max_light_lux": 6000,
-    "min_light_lux": 1500,
-    "max_temp": 32,
-    "min_temp": 10,
-    "max_env_humid": 80,
-    "min_env_humid": 30,
-    "max_soil_moist": 60,
-    "min_soil_moist": 15,
-    "max_soil_ec": 2000,
-    "min_soil_ec": 350,
-    "image_url": "https://example.com/n/sdpo/b/plant-img/o/acanthus%20ilicifolius.jpg"
-}
-```
-
-#### Plant modifications example:
-
-1. Create new plant:
-
-```Shell
-curl --request POST 'http://open.plantbook.io/api/v1/plant/create' \
---header 'Authorization: Bearer token_string' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "display_pid": "Solanum lycopersicum",
-    "alias": "Tomato",
-    "max_light_mmol": 7600,
-    "min_light_mmol": 3200,
-    "max_light_lux": 55000,
-    "min_light_lux": 3000,
-    "max_temp": 33,
-    "min_temp": 12,
-    "max_env_humid": 80,
-    "min_env_humid": 15,
-    "max_soil_moist": 60,
-    "min_soil_moist": 20,
-    "max_soil_ec": 2000,
-    "min_soil_ec": 350
-}'
-```
-
-Response:
-
-```JSON
-{
-    "pid": "solanum lycopersicum",
-    "display_pid": "Solanum lycopersicum",
-    "alias": "Tomato",
-    "max_light_mmol": 7600,
-    "min_light_mmol": 3200,
-    "max_light_lux": 55000,
-    "min_light_lux": 3000,
-    "max_temp": 33,
-    "min_temp": 12,
-    "max_env_humid": 80,
-    "min_env_humid": 15,
-    "max_soil_moist": 60,
-    "min_soil_moist": 20,
-    "max_soil_ec": 2000,
-    "min_soil_ec": 350,
-    "image_url": "https://objectstorage.ap-sydney-1.oraclecloud.com/n/sdyd5yr3jypo/b/plant-img/o/solanum%20lycopersicum.jpg"
-}
-```
-
-Take pid value (not display_name)
-
-2. Update this plant:
-
-```shell
-curl --request PATCH 'http://open.plantbook.io/api/v1/plant/update' \
---header 'Authorization: Bearer token_string' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "pid": "solanum lycopersicum",
-    "max_light_mmol": 1111,
-    "min_light_mmol": 2222,
-    "max_light_lux": 4444,
-    "min_light_lux": 3333,
-    "max_temp": 66,
-    "min_temp": 55
-}'
-```
-
-Response:
-
-```json
-{
-    "pid": "solanum lycopersicum",
-    "display_pid": "Solanum lycopersicum",
-    "alias": "Tomato",
-    "max_light_mmol": 1111,
-    "min_light_mmol": 2222,
-    "max_light_lux": 4444,
-    "min_light_lux": 3333,
-    "max_temp": 66,
-    "min_temp": 55,
-    "max_env_humid": 80,
-    "min_env_humid": 15,
-    "max_soil_moist": 60,
-    "min_soil_moist": 20,
-    "max_soil_ec": 2000,
-    "min_soil_ec": 350,
-    "image_url": "https://objectstorage.ap-sydney-1.oraclecloud.com/n/sdyd5yr3jypo/b/plant-img/o/solanum%20lycopersicum.jpg"
-}
-```
-
-3. Delete the plant:
-
-```shell
-curl --request DELETE 'http://open.plantbook.io/api/v1/plant/delete' \
---header 'Authorization: Bearer token_string' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "pid": "solanum lycopersicum"
-}'
-```
-Response:
-
-Status: 204 No content
