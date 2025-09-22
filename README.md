@@ -16,8 +16,9 @@ API requests will be capped to 200 requests per user per day. This is only to pr
 If you need more requests for any reason, please contact me.
 
 ### release 202509-22 (22 September 2025)
-- New API Feature: API Plant Detail — Alias Override by Language: Added optional `lang` query parameter which accepts either a 2-letter ISO 639-1 language code (e.g., "en") or a 5-character tag of the form ll-CC or ll_CC (e.g., "en-GB", "pt_BR"). When 'lang' parameter provided and a matching common name exists, the response `alias` is overridden with that common name.
-- Updated both API and UI documentation
+- New API Feature: API Plant Detail — Alias Override by Language
+- Added optional `lang` query parameter which accepts language code. When 'lang' parameter provided and a matching common name exists, the response `alias` is overridden with that common name.
+- Updated both [API](https://documenter.getpostman.com/view/12627470/TVsxBRjD) and [UI](https://github.com/slaxor505/OpenPlantbook-client/wiki#index) documentation
 
 ### release 202509 (8 September 2025)
 - New feature: International Common Names for both Public and User-plants
