@@ -80,9 +80,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/v1/sensor-data/instance",
+									"raw": "https://open.plantbook.io/api/v1/sensor-data/instance",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"open",
+										"plantbook",
+										"io"
 									],
 									"path": [
 										"api",
@@ -196,9 +199,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/v1/sensor-data/upload",
+									"raw": "https://open.plantbook.io/api/v1/sensor-data/upload",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"open",
+										"plantbook",
+										"io"
 									],
 									"path": [
 										"api",
@@ -348,13 +354,13 @@
 										},
 										{
 											"key": "client_id",
-											"value": "{{oauth_client}}",
+											"value": "EpEKLfEYv77eaohN12B9L7bhlq0SfibPOjN1yGvQ",
 											"description": "Client ID from \"API keys\" in open.plantbook.io UI",
 											"type": "text"
 										},
 										{
 											"key": "client_secret",
-											"value": "{{oauth_client_secret}}",
+											"value": "nCfPFfwoWhRyWvCnskkrqzEDhdiMNtvMQhUvxPNAfSrL1gqMw4dF3Bd2gPtH93m7w5ol88mNZcNqtb7EWgv4zFPHxKdqUM1OvW4YSEGPwEdBgGfguylrpTZ9uZ2WNDq3",
 											"description": "Client Secret from \"API keys\" in open.plantbook.io UI",
 											"type": "text"
 										},
@@ -367,9 +373,12 @@
 									]
 								},
 								"url": {
-									"raw": "{{url}}/api/v1/token/",
+									"raw": "https://open.plantbook.io/api/v1/token/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"open",
+										"plantbook",
+										"io"
 									],
 									"path": [
 										"api",
@@ -540,7 +549,7 @@
 						}
 					]
 				},
-				"description": "# Search plants by text\nSearch any occurrences of text in \"display_pid\" and \"alias\" fields.\n\n# Query parameters:\n* 'alias' - search string - MINIMUM LENGHT is 3 characters. This parameter is mandatory except when userplant=true. In this case endpoint returns all user's user-plants.\n\n* 'userplant' - user/public plants search selector:\n    true - search and return only user-plants,\n    false - search and return only public-plants,\nif omitted - combined search across user and public plants - returns deduplicated result\n\nDeduplication algorithm works as:\n1. Search public-plants with a search string.\n2. Search user-plants with a search string.\n3. Exclude user-plants from public-plants list.\n4. Also exclude public-plants which exist in user-plants but does not match search string.\n5. Combine user-plants and public-plants in one list.\n\n* Pagination parameters: limit=X offset=Y  [see here][ref].\n[ref]: https://www.django-rest-framework.org/api-guide/pagination/#limitoffsetpagination"
+				"description": "# Search plants by text\n\nSearch any occurrences of text in \"display_pid\" and \"alias\" fields, and also Common names of plants.\n\n# Query parameters:\n\n- 'alias' - search string - MINIMUM LENGHT is 3 characters. This parameter is mandatory except when userplant=true. In this case endpoint returns all user's user-plants. Accepts UTF-8 string for multiligual common names search.  \n    **Bear in mind** that currently there is no indication that the search string matched a Plant's common name so the result include no reference to it hence the result can be confusing.\n    \n- 'userplant' - user/public plants search selector:  \n    true - search and return only user-plants belong to the current user,  \n    false - search and return only public-plants,  \n    if omitted - combined search across user own and public plants - returns deduplicated result\n    \n\nDeduplication algorithm works as:\n\n1. Search public-plants with a search string.\n    \n2. Search user-plants with a search string.\n    \n3. Exclude user-plants from public-plants list.\n    \n4. Also exclude public-plants which exist in user-plants but does not match search string.\n    \n5. Combine user-plants and public-plants in one list.\n    \n\n- Pagination parameters: limit=X offset=Y [see here](https://www.django-rest-framework.org/api-guide/pagination/#limitoffsetpagination)."
 			},
 			"response": [
 				{
@@ -633,7 +642,7 @@
 						""
 					]
 				},
-				"description": "## Get plant details\nRetrieve plant details using \"pid\" (Plant ID) as: /api/v1/plant/detail/pid/\n\nE.g.:\n/api/v1/plant/detail/acer buergerianum/\n\nHow it works:\n* Endpoint searches user-plants first. If found then returns the user plant and add a field {\"user_plant\": True}\n* If no user plants found then it searches public plants. If found the return public plant without adding extra field \"user_plant\".\n\n\n* Trialing slash is required!\n* Result will include {\"user_plant\": True} attribute if the plant is from user-plants."
+				"description": "## Get plant details\n\nRetrieve plant details and corresponding common names by \"pid\" (Plant ID) as: /api/v1/plant/detail/pid/\n\nE.g.:  \n/api/v1/plant/detail/acer buergerianum/\n\nHow it works:\n\n- Endpoint searches own user-plants first. If found then returns the user_plant and add a field {\"user_plant\": True}\n    \n- If no own user plants found then it searches public plants. If found the return public plant without adding extra field \"user_plant\".\n    \n- Trialing slash is required!\n    \n- Result will include {\"user_plant\": True} attribute if the plant is current user's own user-plant.\n    \n- Result include {\"common_names\": \\[\\]} JSON list of plant's common names. Non-English names are in UTF. See examples.\n    \n\nLanguage parameter:\n\n- The endpoint accepts an optional query parameter `lang` as either a 2-letter ISO 639-1 language code (  \n    e.g., \"en\") or a 5-character tag of the form ll-CC or ll_CC (e.g., \"en-GB\", \"pt_BR\"). Input is case-insensitive; the base language is normalized to lowercase.\n    \n- If a common name exists for the requested language, the response `alias` field is overridden with that common name. When a regional tag is provided, the base language (ll) is used for the lookup.\n    \n- Invalid `lang` values (e.g., empty, malformed, non-ISO language codes, or invalid country codes in ll-CC) result in HTTP 400 with a clear error message."
 			},
 			"response": [
 				{
@@ -642,9 +651,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/v1/plant/detail/acer buergerianum/",
+							"raw": "https://open.plantbook.io/api/v1/plant/detail/acer buergerianum/",
+							"protocol": "https",
 							"host": [
-								"{{url}}"
+								"open",
+								"plantbook",
+								"io"
 							],
 							"path": [
 								"api",
@@ -723,7 +735,213 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"pid\": \"alcea 'carmine roset'\",\n    \"display_pid\": \"Alcea 'Carmine Roset'\",\n    \"alias\": \"alcea carmine roset\",\n    \"category\": \"dfghfdgdf\",\n    \"max_light_mmol\": 1111,\n    \"min_light_mmol\": 2500,\n    \"max_light_lux\": 30000,\n    \"min_light_lux\": 2500,\n    \"max_temp\": 32,\n    \"min_temp\": 10,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 30,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 15,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/alcea%20%27carmine%20roset%27.jpg\",\n    \"user_plant\": true\n}"
+					"body": "{\n    \"pid\": \"alcea 'carmine roset'\",\n    \"display_pid\": \"Alcea 'Carmine Roset'\",\n    \"alias\": \"alcea carmine roset\",\n    \"category\": \"dfghfdgdf\",\n    \"max_light_mmol\": 1111,\n    \"min_light_mmol\": 2500,\n    \"max_light_lux\": 30000,\n    \"min_light_lux\": 2500,\n    \"max_temp\": 32,\n    \"min_temp\": 10,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 30,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 15,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/alcea%20%27carmine%20roset%27.jpg\",\n    \"user_plant\": true,\n    \"common_names\": []\n}"
+				},
+				{
+					"name": "Plant Details with Common Names",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/plant/detail/acer buergerianum/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"plant",
+								"detail",
+								"acer buergerianum",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 22 Sep 2025 08:31:11 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Nel",
+							"value": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Accept-Language, origin"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, HEAD, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Language",
+							"value": "en"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "cf-cache-status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Report-To",
+							"value": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=1CQ4I0g9HM332sKeZckfr1l1o0sXpPvN6ZS8%2FxH8%2BvJmU6Uktq42Wcsg4fNyJjbZtWwC33ldCLrdjagL11Nn25wBLbSV%2FcP8dLr1sCs4tewr\"}]}"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "CF-RAY",
+							"value": "983071cdbff7d634-IAD"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"pid\": \"acer buergerianum\",\n    \"display_pid\": \"Acer buergerianum\",\n    \"alias\": \"acer buergerianum\",\n    \"category\": \"Aceraceae, Acer\",\n    \"max_light_mmol\": 7200,\n    \"min_light_mmol\": 3000,\n    \"max_light_lux\": 75000,\n    \"min_light_lux\": 2800,\n    \"max_temp\": 35,\n    \"min_temp\": 5,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 30,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 15,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/acer%20buergerianum.jpg\",\n    \"common_names\": [\n        {\n            \"name\": \"Acer lingii\",\n            \"language_code\": \"en\"\n        },\n        {\n            \"name\": \"Клён трёхраздельный\",\n            \"language_code\": \"ru\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "Plant Details with LANG parameter",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/plant/detail/acer buergerianum/?lang=ru",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"plant",
+								"detail",
+								"acer buergerianum",
+								""
+							],
+							"query": [
+								{
+									"key": "lang",
+									"value": "ru"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 22 Sep 2025 08:38:35 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Nel",
+							"value": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Accept-Language, origin"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, HEAD, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Language",
+							"value": "en"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "cf-cache-status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Report-To",
+							"value": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=4mZv%2FhlndZiFsLp5GLMo%2FgHw9ei7NslcH%2Ba0Nl0B4kPI8A9YjgkPrGeCom6BYpeMYZDJvYDvFJBjJi5beJWn4UkG%2FPM5FOwAHxGFwjxz9sqf\"}]}"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "CF-RAY",
+							"value": "98307ca14edac9ab-IAD"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"pid\": \"acer buergerianum\",\n    \"display_pid\": \"Acer buergerianum\",\n    \"alias\": \"Клён трёхраздельный\",\n    \"category\": \"Aceraceae, Acer\",\n    \"max_light_mmol\": 7200,\n    \"min_light_mmol\": 3000,\n    \"max_light_lux\": 75000,\n    \"min_light_lux\": 2800,\n    \"max_temp\": 35,\n    \"min_temp\": 5,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 30,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 15,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/acer%20buergerianum.jpg\",\n    \"common_names\": [\n        {\n            \"name\": \"Acer lingii\",\n            \"language_code\": \"en\"\n        },\n        {\n            \"name\": \"Клён трёхраздельный\",\n            \"language_code\": \"ru\"\n        }\n    ]\n}"
 				}
 			]
 		},
@@ -781,9 +999,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/plant/create",
+							"raw": "https://open.plantbook.io/api/v1/plant/create",
+							"protocol": "https",
 							"host": [
-								"{{url}}"
+								"open",
+								"plantbook",
+								"io"
 							],
 							"path": [
 								"api",
@@ -854,9 +1075,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/plant/delete",
+							"raw": "https://open.plantbook.io/api/v1/plant/delete",
+							"protocol": "https",
 							"host": [
-								"{{url}}"
+								"open",
+								"plantbook",
+								"io"
 							],
 							"path": [
 								"api",
@@ -958,9 +1182,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/plant/update",
+							"raw": "https://open.plantbook.io/api/v1/plant/update",
+							"protocol": "https",
 							"host": [
-								"{{url}}"
+								"open",
+								"plantbook",
+								"io"
 							],
 							"path": [
 								"api",

@@ -15,6 +15,10 @@ API THROTTLING WILL BE ENABLED from 1 November 2025.
 API requests will be capped to 200 requests per user per day. This is only to prevent API usage abuse by bots and crawlers and preserve the service for other users.
 If you need more requests for any reason, please contact me.
 
+### release 202509-22 (22 September 2025)
+- New API Feature: API Plant Detail — Alias Override by Language: Added optional `lang` query parameter which accepts either a 2-letter ISO 639-1 language code (e.g., "en") or a 5-character tag of the form ll-CC or ll_CC (e.g., "en-GB", "pt_BR"). When 'lang' parameter provided and a matching common name exists, the response `alias` is overridden with that common name.
+- Updated both API and UI documentation
+
 ### release 202509 (8 September 2025)
 - New feature: International Common Names for both Public and User-plants
 - UI: Add Common Name forms have autocomplete suggestions to avoid typos and duplicates
