@@ -16,7 +16,7 @@ To use this API you need to log in to Open Plantbook web UI at https://open.plan
 - Added unit labels for plant threshold fields in UI forms
 
 ## release 202603-28 (28 March 2026)
-- Cache-busting query param to `image_url` based on object modified time (fallback: size) to avoid stale CDN caches
+- Cache-busting query param to `image_url` based on object modified time (fallback: size) to avoid stale CDN caches. Docs: [Cache Busting](https://documenter.getpostman.com/view/12627470/TVsxBRjD#c6cb33f4-e2c3-47d9-b086-786664db24d0)
 - CDN Caching mechanism overhaul
 - Rate-limit enforcement
 - Maintenance and security updates
