@@ -1,1254 +1,1236 @@
 {
-	"info": {
-		"_postman_id": "57305c7a-782e-48b8-b269-834190abaf4c",
-		"name": "Open Plantbook API Public",
-		"description": "Documentation for Open Plantbook API.\n\n[https://open.plantbook.io](https://open.plantbook.io)\n\nThis is free service but it requires registration and API credentials. The credentials need to be generated from Web UI under API keys.\n\nProject page:\n\n[https://plantbook.io](https://plantbook.io)",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "12627470"
-	},
-	"item": [
-		{
-			"name": "Sensor-data",
-			"item": [
-				{
-					"name": "2. Plant-Instance Register",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if (pm.response.code == 200) {",
-									"    pm.test(\"Get Plant Instance ID\", function () {",
-									"        var response = pm.response.json();",
-									"        pm.collectionVariables.set(\"PlantInstaceID\", response.id);",
-									"    });",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"custom_id\": \"Sample instance of abelia chinensis\", \"pid\": \"abelia chinensis\", \"location_country\": \"ZZ\"}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/api/v1/sensor-data/instance",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"sensor-data",
-								"instance"
-							]
-						},
-						"description": "## Register Plant Instance\n\nCreate User's Plant-Instance for the plant's sensors data uploading. The single entry uniquely identifies a plant instance and the set of bound sensors.  \nIf either or is changed then new Plant-Instance is created.\n\nIt includes the plant's location which helps to understand environment where the plant grows so it is highly encouraged to provide this information.\n\nThere are 3 options in the order of priorities. Only 1 option needs to be specified:\n\n1. Coordinates longitude and latitude (preferable). Does not have to be precise location but just approximate coordinates.\n2. Location Country and Name. To specify country you must use ISO 3166-1 alpha-2 code ([https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)). E.g.: \"AU\". Name is region name within country E.g. Name: \"Sydney, New South Wales\"\n3. Location is taken from IP address (default behaviour) The IP address is not stored but just used to identify approximate location.\n    \n\nLocation is only registered on Plant-Instance creation. It is not updated when registering the same plant (same and ) with different location.\n\nAPI client is expected to register Instance-Plant once and they store its ID. They reuse ID to upload sensor data. Although, client can make this call with the same and and the end-point return ID of the existing instance.\n\n### Mandatory attributes:\n\n```\n- \"pid\" - Plant ID is unique plant identifier.\n- \"custom_id\" - This is a plant identified set by a user. It helps to differentiate plant instances when for example a user has 2 instances of the same plant (the same \"pid\")\n\n ```\n\n### Optional attributes:\n\n```\n- \"location_lon\" - location longitude coordinate where plant is located.\n- \"location_lat\" - location latitude coordinate where plant is located.\n- \"location_by_IP\" - Default is \"true\" if not specified. \"false\" - disables the location by IP detection.\n- \"location_name\" - Location name in well known to the location format. API will make it is best to parse and derive the specific location.\n- \"location_region\" - Location region within country.\n- \"location_country\" - Location country code using ISO 3166-1 alpha-2 (2 chars length)\n\n ```\n\n### Returns:\n\nResponse includes ID in UUID format. This is a unique Plant-Instance identifier that is used as JTS \"node\" to upload sensor data.\n\n```\n201 - New Plant-Instance has been created and location registered.\n200 - Plant-Instance (identified by <pid> and <custom_id>) already exists. No action.\n400 - Validation error E.g.: Plant's PID found neither in user-plants nor in public-plants or if a mandatory attribute has not been provided. \n\n ```"
-					},
-					"response": [
-						{
-							"name": "Plant-Instance Register",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"custom_id\": \"abelia chinensis on window\",\n  \"pid\": \"abelia chinensis\",\n  \n  \"location_name\": \"Sydney\",\n  \"location_region\": \"New South Wales\",\n  \"location_country\": \"Australia\",\n  \"location_lon\": \"43.11\",\n  \"location_lat\": \"-15.88\",\n  \"location_by_IP\": \"true\"\n}\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "https://open.plantbook.io/api/v1/sensor-data/instance",
-									"protocol": "https",
-									"host": [
-										"open",
-										"plantbook",
-										"io"
-									],
-									"path": [
-										"api",
-										"v1",
-										"sensor-data",
-										"instance"
-									]
-								}
-							},
-							"status": "Created",
-							"code": 201,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Mon, 14 Nov 2022 11:17:21 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "WSGIServer/0.2 CPython/3.9.15"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Allow",
-									"value": "POST, OPTIONS"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Length",
-									"value": "111"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "Referrer-Policy",
-									"value": "same-origin"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"custom_id\": \"abelia chinensis on window\",\n    \"id\": \"61e7450e-1afe-49a3-937f-6d6e86a5b387\",\n    \"pid\": \"abelia chinensis\"\n}"
-						}
-					]
-				},
-				{
-					"name": "3. Plant-data Upload",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"docType\": \"jts\",\n    \"version\": \"1.0\",\n    \"header\": {\n        \"columns\": {\n            \"0\": {\n                \"id\": \"{{PlantInstanceID}}\",\n                \"name\": \"temp\",\n                \"dataType\": \"NUMBER\",\n                \"format\": \"0.#\"\n            },\n            \"1\": {\n                \"id\": \"{{PlantInstanceID}}\",\n                \"name\": \"soil_moist\",\n                \"dataType\": \"NUMBER\"\n            },\n            \"2\": {\n                \"id\": \"{{PlantInstanceID}}\",\n                \"name\": \"soil_ec\",\n                \"dataType\": \"NUMBER\"\n            },\n            \"3\": {\n                \"id\": \"{{PlantInstanceID}}\",\n                \"name\": \"light_lux\",\n                \"dataType\": \"NUMBER\"\n            },\n            \"4\": {\n                \"id\": \"{{PlantInstanceID}}\",\n                \"name\": \"env_humid\",\n                \"dataType\": \"NUMBER\"\n            }\n        }\n    },\n    \"data\": [\n        {\n            \"ts\": \"2022-08-16T02:05:40.000+1000\",\n            \"f\": {\n                \"0\": {\n                    \"v\": 10.4\n                },\n                \"1\": {\n                    \"v\": 55\n                },\n                \"2\": {\n                    \"v\": 23\n                },\n                \"3\": {\n                    \"v\": 2222\n                }\n            }\n        },\n        {\n            \"ts\": \"2022-08-16T02:06:40+1000\",\n            \"f\": {\n                \"0\": {\n                    \"v\": 12\n                },\n                \"1\": {\n                    \"v\": 55\n                }\n            }\n        },\n        {\n            \"ts\": \"2022-08-16T02:07:40+1000\",\n            \"f\": {\n                \"0\": {\n                    \"v\": 99\n                }\n            }\n        },\n        {\n            \"ts\": \"2022-08-16T02:08:40+1000\",\n            \"f\": {\n                \"0\": {\n                    \"v\": 28.22\n                }\n            }\n        },\n        {\n            \"ts\": \"2022-08-16T02:09:40+1000\",\n            \"f\": {\n                \"0\": {\n                    \"v\": 30.2\n                }\n            }\n        },\n        {\n            \"ts\": \"2022-08-16T02:10:40+1000\",\n            \"f\": {\n                \"0\": {\n                    \"v\": 29.2\n                }\n            }\n        },\n        {\n            \"ts\": \"2022-08-16T02:11:40+1000\",\n            \"f\": {\n                \"0\": {\n                    \"v\": 29.18\n                }\n            }\n        }\n    ]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/api/v1/sensor-data/upload",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"sensor-data",
-								"upload"
-							],
-							"query": [
-								{
-									"key": "dry_run",
-									"value": "true",
-									"description": "Instructs API to only validate JTS payload but does not commit values to the database.",
-									"disabled": true
-								}
-							]
-						},
-						"description": "# Sensor data upload\n\nUpload plants sensor data using JSON-time-series (JTS) protocol.\nFormal specification: https://docs.eagle.io/en/latest/reference/historic/jts.html\n\nLibraries to handle the specification:\n* JavaScript: https://github.com/eagle-io/timeseries\n* Python: https://github.com/slaxor505/json-timeseries-py\n\nTo bind sensor data to a particular plant, Plant-Instance ID is used as <id> which needs to be registered first with \"Plant-Instance Register\" API call first.\n\nThe endpoint supports \"dry_run=true\" query parameter. It instructs API to only validate JTS payload and does not commit values to the database. Please use it when developing/testing integration with mock or test data. It helps to keep DB in order and only store valid sensors data.\n\nPlantbook API specific JTS Document specification:\n\n### Header (required)\n|Attribute|Example|Description|\n|---|---|---|\ndocType|jts|Required. Must be ‘jts’\nversion|1.0|Required. Version ‘1.0’ supported\nheader| |Required. Object describing document data\ndata| |Required. Array of historic records in chronological order\n\n### Header Columns (required)\nBelow is only supported and defaults values of optional attributes if they are not specified\n\n|Column Attribute|Default|Description|\n|---|---|---|\n|id| |(Required) Plant-Instance ID (UUID)\nname| |(Required) Name of sensor measurement. For supported values see below \"Units and Measurement\".|\n|dataType||(Required) Data type of associated node. Supported values: [NUMBER] \nrenderType|VALUE|Rendering of ‘v’ attribute in records. Supported values: [VALUE]\nformat|0.#|Format of the value. Supported values: [0.#]\n\nNote: if column attribute is omitted the it will be set to default value.\n\n**Units and Measurement.** The units are the same as in DB. Currently unit conversion is not support so all the units needs to be converted prior uploading to supported ones.\n\n|Measurement value name|Unit|Description|\n|---|---|---|\nsoil_ec|µS/cm|Soil conductivity\nenv_humid|%|Air humidity\nsoil_moist|%|Soil moisture\nlight_lux|lux|Light lux\ntemp|degrees C|Environment temperature\n\n### Data (required)\n\n|Record Attribute|Example|Description|\n|---|---|---|\n|ts|2018-08-16T02:00:00.000+11:00|(Required) ISO8601 timestamp of data point(s) **IMPORTANT!** Send timestamp with information about original TimeZone. Do not convert to UTC. Otherwise, TZ will be lost and it will be not impossible to determine day/night time for the plant.\n|f| |(Required) Object containing data for 1 or more columns (using column index as key)\n|v|10.4|(Required) Value of column for the corresponding record timestamp Data type should match dataType option in header.\n\n## Returns:\n\n```\n200 - Successfully uploaded.\n400 - Malformed request. See detail field for specifics about a problem. E.g.: if validation or parsing failed. \n```\nNote: JSON-schema validation returns pretty comprehensive error description which include lots of escaped text so it is recommended to unescape it for a better readability using for example https://onlinetexttools.com/unescape-text"
-					},
-					"response": [
-						{
-							"name": "Plant-data Upload",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"docType\": \"jts\",\n    \"version\": \"1.0\",\n    \"header\": {\n        \"columns\": {\n            \"0\": {\n                \"id\": \"421c8a5c-f619-4da6-ba57-ca361a47cfb0\",\n                \"name\": \"temp\",\n                \"dataType\": \"NUMBER\",\n                \"format\": \"0.#\"\n            },\n            \"1\": {\n                \"id\": \"421c8a5c-f619-4da6-ba57-ca361a47cfb0\",\n                \"name\": \"soil_moist\",\n                \"dataType\": \"NUMBER\"\n            },\n            \"2\": {\n                \"id\": \"421c8a5c-f619-4da6-ba57-ca361a47cfb0\",\n                \"name\": \"soil_ec\",\n                \"dataType\": \"NUMBER\"\n            },\n            \"3\": {\n                \"id\": \"{421c8a5c-f619-4da6-ba57-ca361a47cfb0\",\n                \"name\": \"light_lux\",\n                \"dataType\": \"NUMBER\"\n            }\n        }\n    },\n    \"data\": [\n        {\n            \"ts\": \"2022-08-16T02:05:40.000+1000\",\n            \"f\": {\n                \"0\": {\"v\": 10.4},\n                \"1\": {\"v\": 55},\n                \"2\": {\"v\": 23},\n                \"3\": {\"v\": 2222}\n            }\n        },\n        {\n            \"ts\": \"2022-08-16T02:06:40+1000\",\n            \"f\": { \"0\": {\"v\": 12}, \"1\": {\"v\": 55} }\n        },\n        {\n            \"ts\": \"2022-08-16T02:07:40+1000\",\n            \"f\": { \"0\": {\"v\": 99} }\n        },\n        {\n            \"ts\": \"2022-08-16T02:08:40+1000\",\n            \"f\": { \"0\": {\"v\": 28.22 } }\n        },\n        {\n            \"ts\": \"2022-08-16T02:09:40+1000\",\n            \"f\": { \"0\": {\"v\": 30.2 } }\n        },\n        {\n            \"ts\": \"2022-08-16T02:10:40+1000\",\n            \"f\": { \"0\": {\"v\": 29.2 } }\n        },\n        {\n            \"ts\": \"2022-08-16T02:11:40+1000\",\n            \"f\": { \"0\": {\"v\": 29.18 } }\n        }\n    ]\n}\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "https://open.plantbook.io/api/v1/sensor-data/upload",
-									"protocol": "https",
-									"host": [
-										"open",
-										"plantbook",
-										"io"
-									],
-									"path": [
-										"api",
-										"v1",
-										"sensor-data",
-										"upload"
-									],
-									"query": [
-										{
-											"key": "dry_run",
-											"value": "true",
-											"description": "Instructs API to only validate JTS payload but does not commit values to the database.",
-											"disabled": true
-										}
-									]
-								}
-							},
-							"_postman_previewlanguage": null,
-							"header": null,
-							"cookie": [],
-							"body": null
-						},
-						{
-							"name": "Plant-data Upload Multiple Instances",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"docType\": \"jts\",\n    \"version\": \"1.0\",\n    \"header\": {\n        \"columns\": {\n            \"0\": {\n                \"id\": \"421c8a5c-f619-4da6-ba57-ca361a47cfb0\",\n                \"name\": \"temp\",\n                \"dataType\": \"NUMBER\",\n                \"format\": \"0.#\"\n            },\n            \"1\": {\n                \"id\": \"421c8a5c-f619-4da6-ba57-ca361a47cfb0\",\n                \"name\": \"soil_moist\",\n                \"dataType\": \"NUMBER\"\n            },\n            \"2\": {\n                \"id\": \"421c8a5c-f619-4da6-ba57-ca361a47cfb0\",\n                \"name\": \"soil_ec\",\n                \"dataType\": \"NUMBER\"\n            },\n            \"3\": {\n                \"id\": \"421c8a5c-f619-4da6-ba57-ca361a47cfb0\",\n                \"name\": \"light_lux\",\n                \"dataType\": \"NUMBER\"\n            },\n            \"4\": {\n                \"id\": \"61e7450e-1afe-49a3-937f-6d6e86a5b387\",\n                \"name\": \"temp\"\n            },\n            \"5\": {\n                \"id\": \"61e7450e-1afe-49a3-937f-6d6e86a5b387\",\n                \"name\": \"soil_moist\"\n            }\n        }\n    },\n    \"data\": [\n        {\n            \"ts\": \"2018-08-16T02:05:40.000+1000\",\n            \"f\": {\n                \"0\": {\"v\": 10.4},\n                \"1\": {\"v\": 55},\n                \"2\": {\"v\": 23},\n                \"3\": {\"v\": 2222},\n                \"4\": {\"v\": 22},\n                \"5\": {\"v\": 33}\n            }\n        },\n        {\n            \"ts\": \"2018-08-16T02:06:40+1000\",\n            \"f\": { \"0\": {\"v\": 12}, \"1\": {\"v\": 55} }\n        },\n        {\n            \"ts\": \"2018-08-16T02:07:40+1000\",\n            \"f\": { \"0\": {\"v\": 99} }\n        },\n        {\n            \"ts\": \"2018-08-16T02:08:40+1000\",\n            \"f\": { \"0\": {\"v\": 28.22 } }\n        },\n        {\n            \"ts\": \"2018-08-16T02:09:40+1000\",\n            \"f\": { \"0\": {\"v\": 30.2 } }\n        },\n        {\n            \"ts\": \"2018-08-16T02:10:40+1000\",\n            \"f\": { \"0\": {\"v\": 29.2 } }\n        },\n        {\n            \"ts\": \"2018-08-16T02:11:40+1000\",\n            \"f\": { \"0\": {\"v\": 29.18 } }\n        }\n    ]\n}\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/api/v1/sensor-data/upload",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"sensor-data",
-										"upload"
-									]
-								}
-							},
-							"_postman_previewlanguage": null,
-							"header": null,
-							"cookie": [],
-							"body": null
-						}
-					]
-				}
-			],
-			"description": "Plants' sensors data upload API calls.\n\nThe feature allows users to share their own and see other users plants' sensor data. For example, if you grow Rose in Norway then you will be able to see environment conditions where these Roses are grown around the world. Moreover, you are not limited to the plants you have, and you will be able to see all users plants sensor’s data which Plantbook have been collected. It will include location (a country and perhaps city) where a particular plant grows bundled with its sensor data.\n \nThe motivation for users to share their plant’s sensor data is if you are not sharing anything then you won’t see any sensor data from other users. Displayed information is going to be anonymous and only include approximate location, sensor data and related plant.\n\n\n[Sample Python code](https://github.com/slaxor505/OpenPlantbook-client/blob/master/python/sensor-upload.py)"
-		},
-		{
-			"name": "1. Authentication",
-			"item": [
-				{
-					"name": "OAuth2 Client-Credentials OAuth Grant - Get token",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if (pm.response.code == 200) {",
-									"    pm.test(\"Get inital access token\", function () {",
-									"        var response = pm.response.json();",
-									"        pm.collectionVariables.set(\"accessToken\", response.access_token);",
-									"    });",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"strictSSL": true
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "grant_type",
-									"value": "client_credentials",
-									"type": "text"
-								},
-								{
-									"key": "client_id",
-									"value": "{{oauth_client}}",
-									"description": "Client ID from \"API keys\" in open.plantbook.io UI",
-									"type": "text"
-								},
-								{
-									"key": "client_secret",
-									"value": "{{oauth_client_secret}}",
-									"description": "Client Secret from \"API keys\" in open.plantbook.io UI",
-									"type": "text"
-								},
-								{
-									"key": "scope",
-									"value": "read",
-									"type": "text",
-									"disabled": true
-								}
-							]
-						},
-						"url": {
-							"raw": "{{url}}/api/v1/token/",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"token",
-								""
-							]
-						},
-						"description": "Request OAuth2 access token to make API calls.  \nThis is first step to work with the API. The token valid for \"expires_in\" seconds (value in the token) hence there is no need to request new token within this period."
-					},
-					"response": [
-						{
-							"name": "Get token Client Creds",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "grant_type",
-											"value": "client_credentials",
-											"description": "Must be literaly string \"client_credentials\" - determines OAuth grant type",
-											"type": "text"
-										},
-										{
-											"key": "client_id",
-											"value": "EpEKLfEYv77eaohN12B9L7bhlq0SfibPOjN1yGvQ",
-											"description": "Client ID from \"API keys\" in open.plantbook.io UI",
-											"type": "text"
-										},
-										{
-											"key": "client_secret",
-											"value": "nCfPFfwoWhRyWvCnskkrqzEDhdiMNtvMQhUvxPNAfSrL1gqMw4dF3Bd2gPtH93m7w5ol88mNZcNqtb7EWgv4zFPHxKdqUM1OvW4YSEGPwEdBgGfguylrpTZ9uZ2WNDq3",
-											"description": "Client Secret from \"API keys\" in open.plantbook.io UI",
-											"type": "text"
-										},
-										{
-											"key": "scope",
-											"value": "read",
-											"type": "text",
-											"disabled": true
-										}
-									]
-								},
-								"url": {
-									"raw": "https://open.plantbook.io/api/v1/token/",
-									"protocol": "https",
-									"host": [
-										"open",
-										"plantbook",
-										"io"
-									],
-									"path": [
-										"api",
-										"v1",
-										"token",
-										""
-									]
-								}
-							},
-							"_postman_previewlanguage": "json",
-							"header": null,
-							"cookie": [],
-							"body": "{\n    \"access_token\": \"HZzB1P....PrDYxYO2Mt\",\n    \"expires_in\": 86400,\n    \"token_type\": \"Bearer\",\n    \"scope\": \"read write\"\n}"
-						},
-						{
-							"name": "OAuth token usage - Plant Search",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer NjJeh5Ew9arEiJKLU8zJELukbxebew",
-										"description": "Token value received from /api/v1/token/ endpoint with keyword \"Bearer\"",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": []
-								},
-								"url": {
-									"raw": "http://localhost:8000/api/v1/plant/search?alias=acer",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"v1",
-										"plant",
-										"search"
-									],
-									"query": [
-										{
-											"key": "alias",
-											"value": "acer",
-											"description": "search string"
-										},
-										{
-											"key": "userplant",
-											"value": "true",
-											"description": "True - search and return only user-plants, False - search and return only public-plants, absent - combined search user and public - return deduplicated result",
-											"disabled": true
-										}
-									]
-								}
-							},
-							"_postman_previewlanguage": "json",
-							"header": null,
-							"cookie": [],
-							"body": "{\n    \"count\": 38,\n    \"next\": \"http://localhost:8000/api/v1/plant/search?alias=acer&limit=3&offset=23\",\n    \"previous\": \"http://localhost:8000/api/v1/plant/search?alias=acer&limit=3&offset=17\",\n    \"results\": [\n        {\n            \"pid\": \"acer pseudoplatanus\",\n            \"display_pid\": \"Acer pseudoplatanus\",\n            \"alias\": \"acer pseudoplatanus\",\n            \"category\": \"boom\"\n        },\n        {\n            \"pid\": \"acer rubrum\",\n            \"display_pid\": \"Acer rubrum\",\n            \"alias\": \"acer rubrum\",\n            \"category\": \"Aceraceae, Acer\"\n        },\n        {\n            \"pid\": \"acer rubrum 'franksred red sunset'\",\n            \"display_pid\": \"Acer rubrum 'Franksred Red Sunset'\",\n            \"alias\": \"acer rubrum franksred red sunset\",\n            \"category\": \"Aceraceae, Acer\"\n        }\n    ]\n}"
-						},
-						{
-							"name": "API-key token usage - Plant Search",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Token 228d654c09c3a17106d5421eba175a9a15dca07e",
-										"description": "API-key token value from UI with keyword \"Token\""
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": []
-								},
-								"url": {
-									"raw": "{{url}}/api/v1/plant/search?alias=acer",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"plant",
-										"search"
-									],
-									"query": [
-										{
-											"key": "userplant",
-											"value": "true",
-											"description": "True - search and return only user-plants, False - search and return only public-plants, absent - combined search user and public - return deduplicated result",
-											"disabled": true
-										},
-										{
-											"key": "alias",
-											"value": "acer"
-										}
-									]
-								}
-							},
-							"_postman_previewlanguage": null,
-							"header": null,
-							"cookie": [],
-							"body": null
-						}
-					]
-				}
-			],
-			"description": "API supports two types of authentication:\n* OAuth2 Client Credentials \n* API-key\n\n**1) \"OAuth2 Client Credentials grant\".**\n\n**NOTE:** This method is supported across all endpoints.\n\nThe sequence:\n- Generate ClientID and ClientSecret (client credentials) in UI.\n- Using above Client's credentials, get OAuth2 Bearer token from API's token endpoint. The token is valid for limited time. So you need to request new token once it is expired (or prior any request for simplicity).\n- Call API with the issued \"Bearer\" token. It is done with HTTP header \"Authorization\" and value of header consist key word \"Bearer\" and then token value.\n```\nAuthorization: Bearer NjJeh5Ew9arEiJKLU9zJELukbxebew\n```\n\nMore information about OAuth \"Client Credentials\" grant: https://docs.pingidentity.com/bundle/developer/page/ixj1601508083821.html\n\n**2) \"API-key\" authentication.**\n\n**NOTE** API-key is only supported for \"plant/search\" and \"plant/detail\" endpoints.\n\nThis is simplified authentication based on permanent token which is generated when you enable \"API-key\" authentication in UI. This token will never expired and can be used infinite number of times. \nThe sequence:\n- Enable \"Token\" authentication and take copy of permanent API-key token.\n- Call API with the API-key token.\nIt is done with HTTP header \"Authorization\". The difference with OAuth authentication is that the KEY word is \"Token\"(!) and then token value.\n```\nAuthorization: Token 228d654c09c6a17006d5421eba175a9a15dca07e\n```"
-		},
-		{
-			"name": "2. Plant Search",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{accessToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": []
-				},
-				"url": {
-					"raw": "{{url}}/api/v1/plant/search?alias=acer&limit=10&offset=20",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"plant",
-						"search"
-					],
-					"query": [
-						{
-							"key": "alias",
-							"value": "acer",
-							"description": "search string"
-						},
-						{
-							"key": "limit",
-							"value": "10",
-							"description": "number of entries in the result"
-						},
-						{
-							"key": "offset",
-							"value": "20",
-							"description": "results offset"
-						},
-						{
-							"key": "userplant",
-							"value": "true",
-							"description": "True - search and return only user-plants, False - search and return only public-plants, absent - combined search user and public - return deduplicated result",
-							"disabled": true
-						}
-					]
-				},
-				"description": "# Search plants by text\n\nSearch any occurrences of text in \"display_pid\" and \"alias\" fields, and also Common names of plants.\n\n# Query parameters:\n\n- 'alias' - search string - MINIMUM LENGHT is 3 characters. This parameter is mandatory except when userplant=true. In this case endpoint returns all user's user-plants. Accepts UTF-8 string for multiligual common names search.  \n    **Bear in mind** that currently there is no indication that the search string matched a Plant's common name so the result include no reference to it hence the result can be confusing.\n    \n- 'userplant' - user/public plants search selector:  \n    true - search and return only user-plants belong to the current user,  \n    false - search and return only public-plants,  \n    if omitted - combined search across user own and public plants - returns deduplicated result\n    \n\nDeduplication algorithm works as:\n\n1. Search public-plants with a search string.\n    \n2. Search user-plants with a search string.\n    \n3. Exclude user-plants from public-plants list.\n    \n4. Also exclude public-plants which exist in user-plants but does not match search string.\n    \n5. Combine user-plants and public-plants in one list.\n    \n\n- Pagination parameters: limit=X offset=Y [see here](https://www.django-rest-framework.org/api-guide/pagination/#limitoffsetpagination)."
-			},
-			"response": [
-				{
-					"name": "Plant Search",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer NjJeh5Ew9arEiJKLU8zJELukbxebew",
-								"description": "Token value received from /api/v1/token/ endpoint with keyword \"Bearer\"",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": []
-						},
-						"url": {
-							"raw": "http://localhost:8000/api/v1/plant/search?alias=acer&limit=10&offset=20",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"v1",
-								"plant",
-								"search"
-							],
-							"query": [
-								{
-									"key": "alias",
-									"value": "acer",
-									"description": "search string"
-								},
-								{
-									"key": "limit",
-									"value": "10",
-									"description": "number of entries in the result"
-								},
-								{
-									"key": "offset",
-									"value": "20",
-									"description": "results offset"
-								},
-								{
-									"key": "userplant",
-									"value": "true",
-									"description": "True - search and return only user-plants, False - search and return only public-plants, absent - combined search user and public - return deduplicated result",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"_postman_previewlanguage": "json",
-					"header": null,
-					"cookie": [],
-					"body": "{\n    \"count\": 38,\n    \"next\": \"http://localhost:8000/api/v1/plant/search?alias=acer&limit=3&offset=23\",\n    \"previous\": \"http://localhost:8000/api/v1/plant/search?alias=acer&limit=3&offset=17\",\n    \"results\": [\n        {\n            \"pid\": \"acer pseudoplatanus\",\n            \"display_pid\": \"Acer pseudoplatanus\",\n            \"alias\": \"acer pseudoplatanus\",\n            \"category\": \"boom\"\n        },\n        {\n            \"pid\": \"acer rubrum\",\n            \"display_pid\": \"Acer rubrum\",\n            \"alias\": \"acer rubrum\",\n            \"category\": \"Aceraceae, Acer\"\n        },\n        {\n            \"pid\": \"acer rubrum 'franksred red sunset'\",\n            \"display_pid\": \"Acer rubrum 'Franksred Red Sunset'\",\n            \"alias\": \"acer rubrum franksred red sunset\",\n            \"category\": \"Aceraceae, Acer\"\n        }\n    ]\n}"
-				}
-			]
-		},
-		{
-			"name": "3. Plant Details by Pid",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{accessToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{url}}/api/v1/plant/detail/acer buergerianum/",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"plant",
-						"detail",
-						"acer buergerianum",
-						""
-					]
-				},
-				"description": "## Get plant details\n\nRetrieve plant details and corresponding common names by \"pid\" (Plant ID) as: /api/v1/plant/detail/pid/\n\nE.g.:  \n/api/v1/plant/detail/acer buergerianum/\n\nHow it works:\n\n- Endpoint searches own user-plants first. If found then returns the user_plant and add a field {\"user_plant\": True}\n    \n- If no own user plants found then it searches public plants. If found the return public plant without adding extra field \"user_plant\".\n    \n- Trialing slash is required!\n    \n- Result will include {\"user_plant\": True} attribute if the plant is current user's own user-plant.\n    \n- Result include {\"common_names\": \\[\\]} JSON list of plant's common names. Non-English names are in UTF. See examples.\n    \n\nLanguage parameter:\n\n- The endpoint accepts an optional query parameter `lang` as either a 2-letter ISO 639-1 language code (  \n    e.g., \"en\") or a 5-character tag of the form ll-CC or ll_CC (e.g., \"en-GB\", \"pt_BR\"). Input is case-insensitive; the base language is normalized to lowercase.\n    \n- If a common name exists for the requested language, the response `alias` field is overridden with that common name. When a regional tag is provided, the base language (ll) is used for the lookup.\n    \n- Invalid `lang` values (e.g., empty, malformed, non-ISO language codes, or invalid country codes in ll-CC) result in HTTP 400 with a clear error message."
-			},
-			"response": [
-				{
-					"name": "Plant Details from Public plants",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://open.plantbook.io/api/v1/plant/detail/acer buergerianum/",
-							"protocol": "https",
-							"host": [
-								"open",
-								"plantbook",
-								"io"
-							],
-							"path": [
-								"api",
-								"v1",
-								"plant",
-								"detail",
-								"acer buergerianum",
-								""
-							]
-						}
-					},
-					"_postman_previewlanguage": "json",
-					"header": null,
-					"cookie": [],
-					"body": "{\n    \"pid\": \"acer buergerianum\",\n    \"display_pid\": \"Acer buergerianum\",\n    \"alias\": \"acer buergerianum\",\n    \"category\": \"Aceraceae, Acer\",\n    \"max_light_mmol\": 7200,\n    \"min_light_mmol\": 3000,\n    \"max_light_lux\": 75000,\n    \"min_light_lux\": 2800,\n    \"max_temp\": 35,\n    \"min_temp\": 5,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 30,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 15,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/acer%20buergerianum.jpg\"\n}"
-				},
-				{
-					"name": "Plant Details from User plants",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/v1/plant/detail/alcea 'carmine roset'/",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"plant",
-								"detail",
-								"alcea 'carmine roset'",
-								""
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Date",
-							"value": "Fri, 23 Sep 2022 09:29:36 GMT"
-						},
-						{
-							"key": "Server",
-							"value": "WSGIServer/0.2 CPython/3.9.14"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Vary",
-							"value": "Accept"
-						},
-						{
-							"key": "Allow",
-							"value": "GET, HEAD, OPTIONS"
-						},
-						{
-							"key": "X-Frame-Options",
-							"value": "DENY"
-						},
-						{
-							"key": "Content-Length",
-							"value": "447"
-						},
-						{
-							"key": "X-Content-Type-Options",
-							"value": "nosniff"
-						},
-						{
-							"key": "Referrer-Policy",
-							"value": "same-origin"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"pid\": \"alcea 'carmine roset'\",\n    \"display_pid\": \"Alcea 'Carmine Roset'\",\n    \"alias\": \"alcea carmine roset\",\n    \"category\": \"dfghfdgdf\",\n    \"max_light_mmol\": 1111,\n    \"min_light_mmol\": 2500,\n    \"max_light_lux\": 30000,\n    \"min_light_lux\": 2500,\n    \"max_temp\": 32,\n    \"min_temp\": 10,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 30,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 15,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/alcea%20%27carmine%20roset%27.jpg\",\n    \"user_plant\": true,\n    \"common_names\": []\n}"
-				},
-				{
-					"name": "Plant Details with Common Names",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/v1/plant/detail/acer buergerianum/",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"plant",
-								"detail",
-								"acer buergerianum",
-								""
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": null,
-					"header": [
-						{
-							"key": "Date",
-							"value": "Mon, 22 Sep 2025 08:31:11 GMT"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Transfer-Encoding",
-							"value": "chunked"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Nel",
-							"value": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}"
-						},
-						{
-							"key": "Vary",
-							"value": "Accept, Accept-Language, origin"
-						},
-						{
-							"key": "Allow",
-							"value": "GET, HEAD, OPTIONS"
-						},
-						{
-							"key": "X-Frame-Options",
-							"value": "DENY"
-						},
-						{
-							"key": "Content-Language",
-							"value": "en"
-						},
-						{
-							"key": "X-Content-Type-Options",
-							"value": "nosniff"
-						},
-						{
-							"key": "Referrer-Policy",
-							"value": "same-origin"
-						},
-						{
-							"key": "Cross-Origin-Opener-Policy",
-							"value": "same-origin"
-						},
-						{
-							"key": "cf-cache-status",
-							"value": "DYNAMIC"
-						},
-						{
-							"key": "Report-To",
-							"value": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=1CQ4I0g9HM332sKeZckfr1l1o0sXpPvN6ZS8%2FxH8%2BvJmU6Uktq42Wcsg4fNyJjbZtWwC33ldCLrdjagL11Nn25wBLbSV%2FcP8dLr1sCs4tewr\"}]}"
-						},
-						{
-							"key": "Content-Encoding",
-							"value": "br"
-						},
-						{
-							"key": "Server",
-							"value": "cloudflare"
-						},
-						{
-							"key": "CF-RAY",
-							"value": "983071cdbff7d634-IAD"
-						},
-						{
-							"key": "alt-svc",
-							"value": "h3=\":443\"; ma=86400"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"pid\": \"acer buergerianum\",\n    \"display_pid\": \"Acer buergerianum\",\n    \"alias\": \"acer buergerianum\",\n    \"category\": \"Aceraceae, Acer\",\n    \"max_light_mmol\": 7200,\n    \"min_light_mmol\": 3000,\n    \"max_light_lux\": 75000,\n    \"min_light_lux\": 2800,\n    \"max_temp\": 35,\n    \"min_temp\": 5,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 30,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 15,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/acer%20buergerianum.jpg\",\n    \"common_names\": [\n        {\n            \"name\": \"Acer lingii\",\n            \"language_code\": \"en\"\n        },\n        {\n            \"name\": \"Клён трёхраздельный\",\n            \"language_code\": \"ru\"\n        }\n    ]\n}"
-				},
-				{
-					"name": "Plant Details with LANG parameter",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/v1/plant/detail/acer buergerianum/?lang=ru",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"plant",
-								"detail",
-								"acer buergerianum",
-								""
-							],
-							"query": [
-								{
-									"key": "lang",
-									"value": "ru"
-								}
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": null,
-					"header": [
-						{
-							"key": "Date",
-							"value": "Mon, 22 Sep 2025 08:38:35 GMT"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Transfer-Encoding",
-							"value": "chunked"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Nel",
-							"value": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}"
-						},
-						{
-							"key": "Vary",
-							"value": "Accept, Accept-Language, origin"
-						},
-						{
-							"key": "Allow",
-							"value": "GET, HEAD, OPTIONS"
-						},
-						{
-							"key": "X-Frame-Options",
-							"value": "DENY"
-						},
-						{
-							"key": "Content-Language",
-							"value": "en"
-						},
-						{
-							"key": "X-Content-Type-Options",
-							"value": "nosniff"
-						},
-						{
-							"key": "Referrer-Policy",
-							"value": "same-origin"
-						},
-						{
-							"key": "Cross-Origin-Opener-Policy",
-							"value": "same-origin"
-						},
-						{
-							"key": "cf-cache-status",
-							"value": "DYNAMIC"
-						},
-						{
-							"key": "Report-To",
-							"value": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=4mZv%2FhlndZiFsLp5GLMo%2FgHw9ei7NslcH%2Ba0Nl0B4kPI8A9YjgkPrGeCom6BYpeMYZDJvYDvFJBjJi5beJWn4UkG%2FPM5FOwAHxGFwjxz9sqf\"}]}"
-						},
-						{
-							"key": "Content-Encoding",
-							"value": "br"
-						},
-						{
-							"key": "Server",
-							"value": "cloudflare"
-						},
-						{
-							"key": "CF-RAY",
-							"value": "98307ca14edac9ab-IAD"
-						},
-						{
-							"key": "alt-svc",
-							"value": "h3=\":443\"; ma=86400"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"pid\": \"acer buergerianum\",\n    \"display_pid\": \"Acer buergerianum\",\n    \"alias\": \"Клён трёхраздельный\",\n    \"category\": \"Aceraceae, Acer\",\n    \"max_light_mmol\": 7200,\n    \"min_light_mmol\": 3000,\n    \"max_light_lux\": 75000,\n    \"min_light_lux\": 2800,\n    \"max_temp\": 35,\n    \"min_temp\": 5,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 30,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 15,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/acer%20buergerianum.jpg\",\n    \"common_names\": [\n        {\n            \"name\": \"Acer lingii\",\n            \"language_code\": \"en\"\n        },\n        {\n            \"name\": \"Клён трёхраздельный\",\n            \"language_code\": \"ru\"\n        }\n    ]\n}"
-				}
-			]
-		},
-		{
-			"name": "CREATE Plant",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{accessToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"display_pid\": \"Solanum lycopersicum\",\n    \"alias\": \"Tomato\",\n    \"category\": \"Tomato category\",\n    \"max_light_mmol\": 7600,\n    \"min_light_mmol\": 3200,\n    \"max_light_lux\": 55000,\n    \"min_light_lux\": 3000,\n    \"max_temp\": 33,\n    \"min_temp\": 12,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 15,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 20,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}/api/v1/plant/create",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"plant",
-						"create"
-					]
-				},
-				"description": "# Create new user plant or modify public plant.\n\nAccept JSON payload with parameters. See example.\n\n## Mandatory attributes:\n    <display_pid> - Scientific name of the plant. Based on this attribute <pid> (Plant ID) attribute will be automatically generated by lowering case of this attribute.\n    E.g: <display_pid>=\"Tomato Red\" will result in <pid>=\"tomato red\". See postman example for details.\n\nAll omitted non-mandatory attributes will have null value.\n\n\n## Returns:\n    201 - Successfully created.\n    409 - Plant already exists either in user DB or main DB.\n    400 - Malformed request e.g. if a mandatory attribute is not provided."
-			},
-			"response": [
-				{
-					"name": "CREATE Plant",
-					"originalRequest": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"display_pid\": \"Solanum lycopersicum\",\n    \"alias\": \"Tomato\",\n    \"category\": \"Tomato category\",\n    \"max_light_mmol\": 7600,\n    \"min_light_mmol\": 3200,\n    \"max_light_lux\": 55000,\n    \"min_light_lux\": 3000,\n    \"max_temp\": 33,\n    \"min_temp\": 12,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 15,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 20,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://open.plantbook.io/api/v1/plant/create",
-							"protocol": "https",
-							"host": [
-								"open",
-								"plantbook",
-								"io"
-							],
-							"path": [
-								"api",
-								"v1",
-								"plant",
-								"create"
-							]
-						}
-					},
-					"_postman_previewlanguage": "json",
-					"header": null,
-					"cookie": [],
-					"body": "{\n    \"pid\": \"solanum lycopersicum\",\n    \"display_pid\": \"Solanum lycopersicum\",\n    \"alias\": \"Tomato\",\n    \"category\": \"Tomato category\",\n    \"max_light_mmol\": 7600,\n    \"min_light_mmol\": 3200,\n    \"max_light_lux\": 55000,\n    \"min_light_lux\": 3000,\n    \"max_temp\": 33,\n    \"min_temp\": 12,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 15,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 20,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/solanum%20lycopersicum.jpg\",\n    \"user_plant\": true\n}"
-				}
-			]
-		},
-		{
-			"name": "DELETE Plant",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{accessToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"pid\": \"solanum lycopersicum\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}/api/v1/plant/delete",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"plant",
-						"delete"
-					]
-				},
-				"description": "# Delete plant\n\nDelete plant from user-plants. Public-plants cannot be removed.\n\n## Mandatory attributes:\n    \"pid\" - Plant ID - unique plant identifier. Case SENSITIVE!\n    \n## Return:\n    204 - Successfully deleted.\n    404 - Plant does not exist in user DB.\n    400 - Malformed request e.g. if a mandatory attribute is not provided.    \n\n## Known issue:\nIt does not handle omitted mandatory attribute correctly and always return 404 Not Found even if \"pid\" is absent."
-			},
-			"response": [
-				{
-					"name": "DELETE Plant",
-					"originalRequest": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"pid\": \"solanum lycopersicum\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://open.plantbook.io/api/v1/plant/delete",
-							"protocol": "https",
-							"host": [
-								"open",
-								"plantbook",
-								"io"
-							],
-							"path": [
-								"api",
-								"v1",
-								"plant",
-								"delete"
-							]
-						}
-					},
-					"status": "No Content",
-					"code": 204,
-					"_postman_previewlanguage": "plain",
-					"header": [
-						{
-							"key": "Date",
-							"value": "Sun, 18 Sep 2022 10:59:01 GMT"
-						},
-						{
-							"key": "Server",
-							"value": "WSGIServer/0.2 CPython/3.9.13"
-						},
-						{
-							"key": "Allow",
-							"value": "DELETE, OPTIONS"
-						},
-						{
-							"key": "X-Frame-Options",
-							"value": "DENY"
-						},
-						{
-							"key": "Content-Length",
-							"value": "0"
-						},
-						{
-							"key": "X-Content-Type-Options",
-							"value": "nosniff"
-						},
-						{
-							"key": "Referrer-Policy",
-							"value": "same-origin"
-						}
-					],
-					"cookie": [],
-					"body": null
-				}
-			]
-		},
-		{
-			"name": "UPDATE Plant",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{accessToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"pid\": \"acer pseudoplatanus\",\n    \"max_light_mmol\": 1111,\n    \"min_light_mmol\": 2222,\n    \"max_light_lux\": 4444,\n    \"min_light_lux\": 3333,\n    \"max_temp\": 66,\n    \"min_temp\": 55\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}/api/v1/plant/update",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"plant",
-						"update"
-					]
-				},
-				"description": "# Update plant\n\nMethod updates either user-plant or public-plant using JSON payload.\nUser-plant is attempted to update first. If user-plant not found then API searches 'pid' in public-plants. If found in public-plants then the public plant will be cloned and saved as user-plant with requested changes.\n\nEndpoint supports PATCH (partial update - updates only provided attributes), PUT is not supported\n\n## Mandatory attributes:\n\n```\n- \"pid\" - Plant ID is unique plant identifier. Case SENSITIVE!\n- at least 1 field with plant's attribute is required. This is to avoid dull duplicates.\n```\n\n## Returns:\n\n```\n200 - Successfully updated.\n404 - Plant exist neither in user-plants nor in public-plants\n400 - Malformed request e.g. if a mandatory attribute is not provided. \n\n```"
-			},
-			"response": [
-				{
-					"name": "UPDATE Plant",
-					"originalRequest": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"pid\": \"acer pseudoplatanus\",\n    \"max_light_mmol\": 1111,\n    \"min_light_mmol\": 2222,\n    \"max_light_lux\": 4444,\n    \"min_light_lux\": 3333,\n    \"max_temp\": 66,\n    \"min_temp\": 55\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://open.plantbook.io/api/v1/plant/update",
-							"protocol": "https",
-							"host": [
-								"open",
-								"plantbook",
-								"io"
-							],
-							"path": [
-								"api",
-								"v1",
-								"plant",
-								"update"
-							]
-						}
-					},
-					"_postman_previewlanguage": "json",
-					"header": null,
-					"cookie": [],
-					"body": "{\n    \"pid\": \"acer pseudoplatanus\",\n    \"display_pid\": \"Acer pseudoplatanus\",\n    \"alias\": \"acer pseudoplatanus\",\n    \"category\": \"boom\",\n    \"max_light_mmol\": 1111,\n    \"min_light_mmol\": 2222,\n    \"max_light_lux\": 4444,\n    \"min_light_lux\": 3333,\n    \"max_temp\": 66,\n    \"min_temp\": 55,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 30,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 15,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/acer%20pseudoplatanus.jpg\",\n    \"user_plant\": true\n}"
-				}
-			]
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "oauth_client",
-			"value": "client_id_here"
-		},
-		{
-			"key": "oauth_client_secret",
-			"value": "client_secret_here"
-		},
-		{
-			"key": "accessToken",
-			"value": "token_str_here"
-		},
-		{
-			"key": "url",
-			"value": "https://open.plantbook.io"
-		},
-		{
-			"key": "PlantInstaceID",
-			"value": ""
-		},
-		{
-			"key": "PlantInstanceID",
-			"value": ""
-		}
-	]
+  "info": {
+    "_postman_id": "57305c7a-782e-48b8-b269-834190abaf4c",
+    "name": "Open Plantbook API Public",
+    "description": "Documentation for Open Plantbook API.\n\n[https://open.plantbook.io](https://open.plantbook.io)\n\nThis is free service but it requires registration and API credentials. The credentials need to be generated from Web UI under API keys.\n\nProject page:\n\n[https://plantbook.io](https://plantbook.io)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12627470"
+  },
+  "item": [
+    {
+      "name": "Sensor-data",
+      "item": [
+        {
+          "name": "2. Plant-Instance Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code == 200) {",
+                  "    pm.test(\"Get Plant Instance ID\", function () {",
+                  "        var response = pm.response.json();",
+                  "        pm.collectionVariables.set(\"PlantInstaceID\", response.id);",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"custom_id\": \"Sample instance of abelia chinensis\", \"pid\": \"abelia chinensis\", \"location_country\": \"ZZ\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/sensor-data/instance",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "sensor-data",
+                "instance"
+              ]
+            },
+            "description": "## Register Plant Instance\n\nCreate User's Plant-Instance for the plant's sensors data uploading. The single entry uniquely identifies a plant instance and the set of bound sensors.  \nIf either or is changed then new Plant-Instance is created.\n\nIt includes the plant's location which helps to understand environment where the plant grows so it is highly encouraged to provide this information.\n\nThere are 3 options in the order of priorities. Only 1 option needs to be specified:\n\n1. Coordinates longitude and latitude (preferable). Does not have to be precise location but just approximate coordinates.\n2. Location Country and Name. To specify country you must use ISO 3166-1 alpha-2 code ([https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)). E.g.: \"AU\". Name is region name within country E.g. Name: \"Sydney, New South Wales\"\n3. Location is taken from IP address (default behaviour) The IP address is not stored but just used to identify approximate location.\n    \n\nLocation is only registered on Plant-Instance creation. It is not updated when registering the same plant (same and ) with different location.\n\nAPI client is expected to register Instance-Plant once and they store its ID. They reuse ID to upload sensor data. Although, client can make this call with the same and and the end-point return ID of the existing instance.\n\n### Mandatory attributes:\n\n```\n- \"pid\" - Plant ID is unique plant identifier.\n- \"custom_id\" - This is a plant identified set by a user. It helps to differentiate plant instances when for example a user has 2 instances of the same plant (the same \"pid\")\n\n ```\n\n### Optional attributes:\n\n```\n- \"location_lon\" - location longitude coordinate where plant is located.\n- \"location_lat\" - location latitude coordinate where plant is located.\n- \"location_by_IP\" - Default is \"true\" if not specified. \"false\" - disables the location by IP detection.\n- \"location_name\" - Location name in well known to the location format. API will make it is best to parse and derive the specific location.\n- \"location_region\" - Location region within country.\n- \"location_country\" - Location country code using ISO 3166-1 alpha-2 (2 chars length)\n\n ```\n\n### Returns:\n\nResponse includes ID in UUID format. This is a unique Plant-Instance identifier that is used as JTS \"node\" to upload sensor data.\n\n```\n201 - New Plant-Instance has been created and location registered.\n200 - Plant-Instance (identified by <pid> and <custom_id>) already exists. No action.\n400 - Validation error E.g.: Plant's PID found neither in user-plants nor in public-plants or if a mandatory attribute has not been provided. \n\n ```"
+          },
+          "response": [
+            {
+              "name": "Plant-Instance Register",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"custom_id\": \"abelia chinensis on window\",\n  \"pid\": \"abelia chinensis\",\n  \n  \"location_name\": \"Sydney\",\n  \"location_region\": \"New South Wales\",\n  \"location_country\": \"Australia\",\n  \"location_lon\": \"43.11\",\n  \"location_lat\": \"-15.88\",\n  \"location_by_IP\": \"true\"\n}\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/api/v1/sensor-data/instance",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "sensor-data",
+                    "instance"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 14 Nov 2022 11:17:21 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.9.15"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Allow",
+                  "value": "POST, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "111"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"custom_id\": \"abelia chinensis on window\",\n    \"id\": \"61e7450e-1afe-49a3-937f-6d6e86a5b387\",\n    \"pid\": \"abelia chinensis\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "3. Plant-data Upload",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"docType\": \"jts\",\n    \"version\": \"1.0\",\n    \"header\": {\n        \"columns\": {\n            \"0\": {\n                \"id\": \"{{PlantInstanceID}}\",\n                \"name\": \"temp\",\n                \"dataType\": \"NUMBER\",\n                \"format\": \"0.#\"\n            },\n            \"1\": {\n                \"id\": \"{{PlantInstanceID}}\",\n                \"name\": \"soil_moist\",\n                \"dataType\": \"NUMBER\"\n            },\n            \"2\": {\n                \"id\": \"{{PlantInstanceID}}\",\n                \"name\": \"soil_ec\",\n                \"dataType\": \"NUMBER\"\n            },\n            \"3\": {\n                \"id\": \"{{PlantInstanceID}}\",\n                \"name\": \"light_lux\",\n                \"dataType\": \"NUMBER\"\n            },\n            \"4\": {\n                \"id\": \"{{PlantInstanceID}}\",\n                \"name\": \"env_humid\",\n                \"dataType\": \"NUMBER\"\n            }\n        }\n    },\n    \"data\": [\n        {\n            \"ts\": \"2022-08-16T02:05:40.000+1000\",\n            \"f\": {\n                \"0\": {\n                    \"v\": 10.4\n                },\n                \"1\": {\n                    \"v\": 55\n                },\n                \"2\": {\n                    \"v\": 23\n                },\n                \"3\": {\n                    \"v\": 2222\n                }\n            }\n        },\n        {\n            \"ts\": \"2022-08-16T02:06:40+1000\",\n            \"f\": {\n                \"0\": {\n                    \"v\": 12\n                },\n                \"1\": {\n                    \"v\": 55\n                }\n            }\n        },\n        {\n            \"ts\": \"2022-08-16T02:07:40+1000\",\n            \"f\": {\n                \"0\": {\n                    \"v\": 99\n                }\n            }\n        },\n        {\n            \"ts\": \"2022-08-16T02:08:40+1000\",\n            \"f\": {\n                \"0\": {\n                    \"v\": 28.22\n                }\n            }\n        },\n        {\n            \"ts\": \"2022-08-16T02:09:40+1000\",\n            \"f\": {\n                \"0\": {\n                    \"v\": 30.2\n                }\n            }\n        },\n        {\n            \"ts\": \"2022-08-16T02:10:40+1000\",\n            \"f\": {\n                \"0\": {\n                    \"v\": 29.2\n                }\n            }\n        },\n        {\n            \"ts\": \"2022-08-16T02:11:40+1000\",\n            \"f\": {\n                \"0\": {\n                    \"v\": 29.18\n                }\n            }\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/sensor-data/upload",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "sensor-data",
+                "upload"
+              ],
+              "query": [
+                {
+                  "key": "dry_run",
+                  "value": "true",
+                  "description": "Instructs API to only validate JTS payload but does not commit values to the database.",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "# Sensor data upload\n\nUpload plants sensor data using JSON-time-series (JTS) protocol.\nFormal specification: https://docs.eagle.io/en/latest/reference/historic/jts.html\n\nLibraries to handle the specification:\n* JavaScript: https://github.com/eagle-io/timeseries\n* Python: https://github.com/slaxor505/json-timeseries-py\n\nTo bind sensor data to a particular plant, Plant-Instance ID is used as <id> which needs to be registered first with \"Plant-Instance Register\" API call first.\n\nThe endpoint supports \"dry_run=true\" query parameter. It instructs API to only validate JTS payload and does not commit values to the database. Please use it when developing/testing integration with mock or test data. It helps to keep DB in order and only store valid sensors data.\n\nPlantbook API specific JTS Document specification:\n\n### Header (required)\n|Attribute|Example|Description|\n|---|---|---|\ndocType|jts|Required. Must be ‘jts’\nversion|1.0|Required. Version ‘1.0’ supported\nheader| |Required. Object describing document data\ndata| |Required. Array of historic records in chronological order\n\n### Header Columns (required)\nBelow is only supported and defaults values of optional attributes if they are not specified\n\n|Column Attribute|Default|Description|\n|---|---|---|\n|id| |(Required) Plant-Instance ID (UUID)\nname| |(Required) Name of sensor measurement. For supported values see below \"Units and Measurement\".|\n|dataType||(Required) Data type of associated node. Supported values: [NUMBER] \nrenderType|VALUE|Rendering of ‘v’ attribute in records. Supported values: [VALUE]\nformat|0.#|Format of the value. Supported values: [0.#]\n\nNote: if column attribute is omitted the it will be set to default value.\n\n**Units and Measurement.** The units are the same as in DB. Currently unit conversion is not support so all the units needs to be converted prior uploading to supported ones.\n\n|Measurement value name|Unit|Description|\n|---|---|---|\nsoil_ec|µS/cm|Soil conductivity\nenv_humid|%|Air humidity\nsoil_moist|%|Soil moisture\nlight_lux|lux|Light lux\ntemp|degrees C|Environment temperature\n\n### Data (required)\n\n|Record Attribute|Example|Description|\n|---|---|---|\n|ts|2018-08-16T02:00:00.000+11:00|(Required) ISO8601 timestamp of data point(s) **IMPORTANT!** Send timestamp with information about original TimeZone. Do not convert to UTC. Otherwise, TZ will be lost and it will be not impossible to determine day/night time for the plant.\n|f| |(Required) Object containing data for 1 or more columns (using column index as key)\n|v|10.4|(Required) Value of column for the corresponding record timestamp Data type should match dataType option in header.\n\n## Returns:\n\n```\n200 - Successfully uploaded.\n400 - Malformed request. See detail field for specifics about a problem. E.g.: if validation or parsing failed. \n```\nNote: JSON-schema validation returns pretty comprehensive error description which include lots of escaped text so it is recommended to unescape it for a better readability using for example https://onlinetexttools.com/unescape-text"
+          },
+          "response": [
+            {
+              "name": "Plant-data Upload",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"docType\": \"jts\",\n    \"version\": \"1.0\",\n    \"header\": {\n        \"columns\": {\n            \"0\": {\n                \"id\": \"421c8a5c-f619-4da6-ba57-ca361a47cfb0\",\n                \"name\": \"temp\",\n                \"dataType\": \"NUMBER\",\n                \"format\": \"0.#\"\n            },\n            \"1\": {\n                \"id\": \"421c8a5c-f619-4da6-ba57-ca361a47cfb0\",\n                \"name\": \"soil_moist\",\n                \"dataType\": \"NUMBER\"\n            },\n            \"2\": {\n                \"id\": \"421c8a5c-f619-4da6-ba57-ca361a47cfb0\",\n                \"name\": \"soil_ec\",\n                \"dataType\": \"NUMBER\"\n            },\n            \"3\": {\n                \"id\": \"{421c8a5c-f619-4da6-ba57-ca361a47cfb0\",\n                \"name\": \"light_lux\",\n                \"dataType\": \"NUMBER\"\n            }\n        }\n    },\n    \"data\": [\n        {\n            \"ts\": \"2022-08-16T02:05:40.000+1000\",\n            \"f\": {\n                \"0\": {\"v\": 10.4},\n                \"1\": {\"v\": 55},\n                \"2\": {\"v\": 23},\n                \"3\": {\"v\": 2222}\n            }\n        },\n        {\n            \"ts\": \"2022-08-16T02:06:40+1000\",\n            \"f\": { \"0\": {\"v\": 12}, \"1\": {\"v\": 55} }\n        },\n        {\n            \"ts\": \"2022-08-16T02:07:40+1000\",\n            \"f\": { \"0\": {\"v\": 99} }\n        },\n        {\n            \"ts\": \"2022-08-16T02:08:40+1000\",\n            \"f\": { \"0\": {\"v\": 28.22 } }\n        },\n        {\n            \"ts\": \"2022-08-16T02:09:40+1000\",\n            \"f\": { \"0\": {\"v\": 30.2 } }\n        },\n        {\n            \"ts\": \"2022-08-16T02:10:40+1000\",\n            \"f\": { \"0\": {\"v\": 29.2 } }\n        },\n        {\n            \"ts\": \"2022-08-16T02:11:40+1000\",\n            \"f\": { \"0\": {\"v\": 29.18 } }\n        }\n    ]\n}\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/api/v1/sensor-data/upload",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "sensor-data",
+                    "upload"
+                  ],
+                  "query": [
+                    {
+                      "key": "dry_run",
+                      "value": "true",
+                      "description": "Instructs API to only validate JTS payload but does not commit values to the database.",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            },
+            {
+              "name": "Plant-data Upload Multiple Instances",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"docType\": \"jts\",\n    \"version\": \"1.0\",\n    \"header\": {\n        \"columns\": {\n            \"0\": {\n                \"id\": \"421c8a5c-f619-4da6-ba57-ca361a47cfb0\",\n                \"name\": \"temp\",\n                \"dataType\": \"NUMBER\",\n                \"format\": \"0.#\"\n            },\n            \"1\": {\n                \"id\": \"421c8a5c-f619-4da6-ba57-ca361a47cfb0\",\n                \"name\": \"soil_moist\",\n                \"dataType\": \"NUMBER\"\n            },\n            \"2\": {\n                \"id\": \"421c8a5c-f619-4da6-ba57-ca361a47cfb0\",\n                \"name\": \"soil_ec\",\n                \"dataType\": \"NUMBER\"\n            },\n            \"3\": {\n                \"id\": \"421c8a5c-f619-4da6-ba57-ca361a47cfb0\",\n                \"name\": \"light_lux\",\n                \"dataType\": \"NUMBER\"\n            },\n            \"4\": {\n                \"id\": \"61e7450e-1afe-49a3-937f-6d6e86a5b387\",\n                \"name\": \"temp\"\n            },\n            \"5\": {\n                \"id\": \"61e7450e-1afe-49a3-937f-6d6e86a5b387\",\n                \"name\": \"soil_moist\"\n            }\n        }\n    },\n    \"data\": [\n        {\n            \"ts\": \"2018-08-16T02:05:40.000+1000\",\n            \"f\": {\n                \"0\": {\"v\": 10.4},\n                \"1\": {\"v\": 55},\n                \"2\": {\"v\": 23},\n                \"3\": {\"v\": 2222},\n                \"4\": {\"v\": 22},\n                \"5\": {\"v\": 33}\n            }\n        },\n        {\n            \"ts\": \"2018-08-16T02:06:40+1000\",\n            \"f\": { \"0\": {\"v\": 12}, \"1\": {\"v\": 55} }\n        },\n        {\n            \"ts\": \"2018-08-16T02:07:40+1000\",\n            \"f\": { \"0\": {\"v\": 99} }\n        },\n        {\n            \"ts\": \"2018-08-16T02:08:40+1000\",\n            \"f\": { \"0\": {\"v\": 28.22 } }\n        },\n        {\n            \"ts\": \"2018-08-16T02:09:40+1000\",\n            \"f\": { \"0\": {\"v\": 30.2 } }\n        },\n        {\n            \"ts\": \"2018-08-16T02:10:40+1000\",\n            \"f\": { \"0\": {\"v\": 29.2 } }\n        },\n        {\n            \"ts\": \"2018-08-16T02:11:40+1000\",\n            \"f\": { \"0\": {\"v\": 29.18 } }\n        }\n    ]\n}\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/api/v1/sensor-data/upload",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "sensor-data",
+                    "upload"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            }
+          ]
+        }
+      ],
+      "description": "Plants' sensors data upload API calls.\n\nThe feature allows users to share their own and see other users plants' sensor data. For example, if you grow Rose in Norway then you will be able to see environment conditions where these Roses are grown around the world. Moreover, you are not limited to the plants you have, and you will be able to see all users plants sensor’s data which Plantbook have been collected. It will include location (a country and perhaps city) where a particular plant grows bundled with its sensor data.\n \nThe motivation for users to share their plant’s sensor data is if you are not sharing anything then you won’t see any sensor data from other users. Displayed information is going to be anonymous and only include approximate location, sensor data and related plant.\n\n\n[Sample Python code](https://github.com/slaxor505/OpenPlantbook-client/blob/master/python/sensor-upload.py)"
+    },
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "OAuth2 Client-Credentials OAuth Grant - Get token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code == 200) {",
+                  "    pm.test(\"Get inital access token\", function () {",
+                  "        var response = pm.response.json();",
+                  "        pm.collectionVariables.set(\"accessToken\", response.access_token);",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "strictSSL": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "grant_type",
+                  "type": "text",
+                  "value": "client_credentials"
+                },
+                {
+                  "description": "Client ID from \"API keys\" in open.plantbook.io UI",
+                  "key": "client_id",
+                  "type": "text",
+                  "value": "{{oauth_client}}"
+                },
+                {
+                  "description": "Client Secret from \"API keys\" in open.plantbook.io UI",
+                  "key": "client_secret",
+                  "type": "text",
+                  "value": "{{oauth_client_secret}}"
+                },
+                {
+                  "key": "scope",
+                  "value": "read",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/token/",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "token",
+                ""
+              ]
+            },
+            "description": "Request OAuth2 access token to make API calls.  \nThis is first step to work with the API. The token valid for \"expires_in\" seconds (value in the token) hence there is no need to request new token within this period."
+          },
+          "response": [
+            {
+              "name": "Get token Client Creds",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": "Must be literaly string \"client_credentials\" - determines OAuth grant type",
+                      "key": "grant_type",
+                      "type": "text",
+                      "value": "client_credentials"
+                    },
+                    {
+                      "description": "Client ID from \"API keys\" in open.plantbook.io UI",
+                      "key": "client_id",
+                      "type": "text",
+                      "value": "{{oauth_client}}"
+                    },
+                    {
+                      "description": "Client Secret from \"API keys\" in open.plantbook.io UI",
+                      "key": "client_secret",
+                      "type": "text",
+                      "value": "{{oauth_client_secret}}"
+                    },
+                    {
+                      "key": "scope",
+                      "value": "read",
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{url}}/api/v1/token/",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "token",
+                    ""
+                  ]
+                }
+              },
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"access_token\": \"HZzB1P....PrDYxYO2Mt\",\n    \"expires_in\": 86400,\n    \"token_type\": \"Bearer\",\n    \"scope\": \"read write\"\n}"
+            },
+            {
+              "name": "OAuth token usage - Plant Search",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer NjJeh5Ew9arEiJKLU8zJELukbxebew",
+                    "description": "Token value received from /api/v1/token/ endpoint with keyword \"Bearer\"",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "http://localhost:8000/api/v1/plant/search?alias=acer",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "v1",
+                    "plant",
+                    "search"
+                  ],
+                  "query": [
+                    {
+                      "key": "alias",
+                      "value": "acer",
+                      "description": "search string"
+                    },
+                    {
+                      "key": "userplant",
+                      "value": "true",
+                      "description": "True - search and return only user-plants, False - search and return only public-plants, absent - combined search user and public - return deduplicated result",
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"count\": 38,\n    \"next\": \"http://localhost:8000/api/v1/plant/search?alias=acer&limit=3&offset=23\",\n    \"previous\": \"http://localhost:8000/api/v1/plant/search?alias=acer&limit=3&offset=17\",\n    \"results\": [\n        {\n            \"pid\": \"acer pseudoplatanus\",\n            \"display_pid\": \"Acer pseudoplatanus\",\n            \"alias\": \"acer pseudoplatanus\",\n            \"category\": \"boom\"\n        },\n        {\n            \"pid\": \"acer rubrum\",\n            \"display_pid\": \"Acer rubrum\",\n            \"alias\": \"acer rubrum\",\n            \"category\": \"Aceraceae, Acer\"\n        },\n        {\n            \"pid\": \"acer rubrum 'franksred red sunset'\",\n            \"display_pid\": \"Acer rubrum 'Franksred Red Sunset'\",\n            \"alias\": \"acer rubrum franksred red sunset\",\n            \"category\": \"Aceraceae, Acer\"\n        }\n    ]\n}"
+            },
+            {
+              "name": "API-key token usage - Plant Search",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Token 228d654c09c3a17106d5421eba175a9a15dca07e",
+                    "description": "API-key token value from UI with keyword \"Token\""
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{url}}/api/v1/plant/search?alias=acer",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "plant",
+                    "search"
+                  ],
+                  "query": [
+                    {
+                      "key": "userplant",
+                      "value": "true",
+                      "description": "True - search and return only user-plants, False - search and return only public-plants, absent - combined search user and public - return deduplicated result",
+                      "disabled": true
+                    },
+                    {
+                      "key": "alias",
+                      "value": "acer"
+                    }
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            }
+          ]
+        }
+      ],
+      "description": "API supports two types of authentication:\n* OAuth2 Client Credentials \n* API-key\n\n**1) \"OAuth2 Client Credentials grant\".**\n\n**NOTE:** This method is supported across all endpoints.\n\nThe sequence:\n- Generate ClientID and ClientSecret (client credentials) in UI.\n- Using above Client's credentials, get OAuth2 Bearer token from API's token endpoint. The token is valid for limited time. So you need to request new token once it is expired (or prior any request for simplicity).\n- Call API with the issued \"Bearer\" token. It is done with HTTP header \"Authorization\" and value of header consist key word \"Bearer\" and then token value.\n```\nAuthorization: Bearer NjJeh5Ew9arEiJKLU9zJELukbxebew\n```\n\nMore information about OAuth \"Client Credentials\" grant: https://docs.pingidentity.com/bundle/developer/page/ixj1601508083821.html\n\n**2) \"API-key\" authentication.**\n\n**NOTE** API-key is only supported for \"plant/search\" and \"plant/detail\" endpoints.\n\nThis is simplified authentication based on permanent token which is generated when you enable \"API-key\" authentication in UI. This token will never expired and can be used infinite number of times. \nThe sequence:\n- Enable \"Token\" authentication and take copy of permanent API-key token.\n- Call API with the API-key token.\nIt is done with HTTP header \"Authorization\". The difference with OAuth authentication is that the KEY word is \"Token\"(!) and then token value.\n```\nAuthorization: Token 228d654c09c6a17006d5421eba175a9a15dca07e\n```"
+    },
+    {
+      "name": "2. Plant Search",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": []
+        },
+        "url": {
+          "raw": "{{url}}/api/v1/plant/search?alias=acer&limit=10&offset=20",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "plant",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "alias",
+              "value": "acer",
+              "description": "search string"
+            },
+            {
+              "key": "limit",
+              "value": "10",
+              "description": "number of entries in the result"
+            },
+            {
+              "key": "offset",
+              "value": "20",
+              "description": "results offset"
+            },
+            {
+              "key": "userplant",
+              "value": "true",
+              "description": "True - search and return only user-plants, False - search and return only public-plants, absent - combined search user and public - return deduplicated result",
+              "type": "text",
+              "disabled": true
+            }
+          ]
+        },
+        "description": "# Search plants by text\n\nSearch any occurrences of text in \"display_pid\" and \"alias\" fields, and also Common names of plants.\n\n# Query parameters:\n\n- 'alias' - search string - MINIMUM LENGHT is 3 characters. This parameter is mandatory except when userplant=true. In this case endpoint returns all user's user-plants. Accepts UTF-8 string for multiligual common names search.  \n    **Bear in mind** that currently there is no indication that the search string matched a Plant's common name so the result include no reference to it hence the result can be confusing.\n    \n- 'userplant' - user/public plants search selector:  \n    true - search and return only user-plants belong to the current user,  \n    false - search and return only public-plants,  \n    if omitted - combined search across user own and public plants - returns deduplicated result\n    \n\nDeduplication algorithm works as:\n\n1. Search public-plants with a search string.\n    \n2. Search user-plants with a search string.\n    \n3. Exclude user-plants from public-plants list.\n    \n4. Also exclude public-plants which exist in user-plants but does not match search string.\n    \n5. Combine user-plants and public-plants in one list.\n    \n\n- Pagination parameters: limit=X offset=Y [see here](https://www.django-rest-framework.org/api-guide/pagination/#limitoffsetpagination)."
+      },
+      "response": [
+        {
+          "name": "Plant Search",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer NjJeh5Ew9arEiJKLU8zJELukbxebew",
+                "description": "Token value received from /api/v1/token/ endpoint with keyword \"Bearer\"",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/plant/search?alias=acer&limit=10&offset=20",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "plant",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "alias",
+                  "value": "acer",
+                  "description": "search string"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "number of entries in the result"
+                },
+                {
+                  "key": "offset",
+                  "value": "20",
+                  "description": "results offset"
+                },
+                {
+                  "key": "userplant",
+                  "value": "true",
+                  "description": "True - search and return only user-plants, False - search and return only public-plants, absent - combined search user and public - return deduplicated result",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": null,
+          "cookie": [],
+          "body": "{\n    \"count\": 38,\n    \"next\": \"http://localhost:8000/api/v1/plant/search?alias=acer&limit=3&offset=23\",\n    \"previous\": \"http://localhost:8000/api/v1/plant/search?alias=acer&limit=3&offset=17\",\n    \"results\": [\n        {\n            \"pid\": \"acer pseudoplatanus\",\n            \"display_pid\": \"Acer pseudoplatanus\",\n            \"alias\": \"acer pseudoplatanus\",\n            \"category\": \"boom\"\n        },\n        {\n            \"pid\": \"acer rubrum\",\n            \"display_pid\": \"Acer rubrum\",\n            \"alias\": \"acer rubrum\",\n            \"category\": \"Aceraceae, Acer\"\n        },\n        {\n            \"pid\": \"acer rubrum 'franksred red sunset'\",\n            \"display_pid\": \"Acer rubrum 'Franksred Red Sunset'\",\n            \"alias\": \"acer rubrum franksred red sunset\",\n            \"category\": \"Aceraceae, Acer\"\n        }\n    ]\n}"
+        }
+      ]
+    },
+    {
+      "name": "3. Plant Details by Plant-ID",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{url}}/api/v1/plant/detail/acer buergerianum/",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "plant",
+            "detail",
+            "acer buergerianum",
+            ""
+          ]
+        },
+        "description": "## Get plant details\n\nRetrieve plant details and corresponding common names by \"pid\" (Plant ID) as: /api/v1/plant/detail/pid/\n\nE.g.:  \n/api/v1/plant/detail/acer buergerianum/\n\n### How it works:\n\n- Endpoint searches own user-plants first. If found then returns the user_plant and add a field {\"user_plant\": True}\n    \n- If no own user plants found then it searches public plants. If found the return public plant without adding extra field \"user_plant\".\n    \n- Trialing slash is required!\n    \n- Result will include {\"user_plant\": True} attribute if the plant is current user's own user-plant.\n    \n- Result include {\"common_names\": \\[\\]} JSON list of plant's common names. Non-English names are in UTF. See examples.\n    \n\n### Language parameter:\n\n- The endpoint accepts an optional query parameter `lang` as either a 2-letter ISO 639-1 language code (  \n    e.g., \"en\") or a 5-character tag of the form ll-CC or ll_CC (e.g., \"en-GB\", \"pt_BR\"). Input is case-insensitive; the base language is normalized to lowercase.\n    \n- If a common name exists for the requested language, the response `alias` field is overridden with that common name. When a regional tag is provided, the base language (ll) is used for the lookup.\n    \n- Invalid `lang` values (e.g., empty, malformed, non-ISO language codes, or invalid country codes in ll-CC) result in HTTP 400 with a clear error message.\n    \n\n### Cache-Bust Parameter for API Images\n\n#### Problem it solves:\n\nPlant images are stored at a **deterministic path**, so the URL never changes when an image is replaced. CDN caches responses aggressively, meaning the old image keeps being served even after a successful overwrite in Image Storage.\n\n#### How it works\n\nThe `image_url` property automatically appends a version query string whenever a custom image file is present:\n\n``` scheme\nhttps://opb-img.plantbook.io/rose.jpg?v=1711584000\n\n ```\n\n**Version value selection (in priority order):**\n\n1. **Modified time** — `?v=` from `storage.get_modified_time()`. Changes every time the file is overwritten.\n    \n2. **File size** (fallback) — `?v=` if modified time is unavailable.\n    \n3. **No param** — bare URL returned if both lookups fail.\n    \n\n> Default/public plant images (no `image_file` set) use a static URL with no version param — they are not affected."
+      },
+      "response": [
+        {
+          "name": "Plant Details from Public plants",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/v1/plant/detail/acer buergerianum/",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "plant",
+                "detail",
+                "acer buergerianum",
+                ""
+              ]
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": null,
+          "cookie": [],
+          "body": "{\n    \"pid\": \"acer buergerianum\",\n    \"display_pid\": \"Acer buergerianum\",\n    \"alias\": \"acer buergerianum\",\n    \"category\": \"Aceraceae, Acer\",\n    \"max_light_mmol\": 7200,\n    \"min_light_mmol\": 3000,\n    \"max_light_lux\": 75000,\n    \"min_light_lux\": 2800,\n    \"max_temp\": 35,\n    \"min_temp\": 5,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 30,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 15,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/acer%20buergerianum.jpg\"\n}"
+        },
+        {
+          "name": "Plant Details from User plants",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/v1/plant/detail/alcea 'carmine roset'/",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "plant",
+                "detail",
+                "alcea 'carmine roset'",
+                ""
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Date",
+              "value": "Fri, 23 Sep 2022 09:29:36 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "WSGIServer/0.2 CPython/3.9.14"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Vary",
+              "value": "Accept"
+            },
+            {
+              "key": "Allow",
+              "value": "GET, HEAD, OPTIONS"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Length",
+              "value": "447"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "same-origin"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"pid\": \"alcea 'carmine roset'\",\n    \"display_pid\": \"Alcea 'Carmine Roset'\",\n    \"alias\": \"alcea carmine roset\",\n    \"category\": \"dfghfdgdf\",\n    \"max_light_mmol\": 1111,\n    \"min_light_mmol\": 2500,\n    \"max_light_lux\": 30000,\n    \"min_light_lux\": 2500,\n    \"max_temp\": 32,\n    \"min_temp\": 10,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 30,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 15,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/alcea%20%27carmine%20roset%27.jpg\",\n    \"user_plant\": true,\n    \"common_names\": []\n}"
+        },
+        {
+          "name": "Plant Details with Common Names",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/v1/plant/detail/acer buergerianum/",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "plant",
+                "detail",
+                "acer buergerianum",
+                ""
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 22 Sep 2025 08:31:11 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Nel",
+              "value": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}"
+            },
+            {
+              "key": "Vary",
+              "value": "Accept, Accept-Language, origin"
+            },
+            {
+              "key": "Allow",
+              "value": "GET, HEAD, OPTIONS"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Language",
+              "value": "en"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "Cross-Origin-Opener-Policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "Report-To",
+              "value": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=1CQ4I0g9HM332sKeZckfr1l1o0sXpPvN6ZS8%2FxH8%2BvJmU6Uktq42Wcsg4fNyJjbZtWwC33ldCLrdjagL11Nn25wBLbSV%2FcP8dLr1sCs4tewr\"}]}"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "Server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "CF-RAY",
+              "value": "983071cdbff7d634-IAD"
+            },
+            {
+              "key": "alt-svc",
+              "value": "h3=\":443\"; ma=86400"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"pid\": \"acer buergerianum\",\n    \"display_pid\": \"Acer buergerianum\",\n    \"alias\": \"acer buergerianum\",\n    \"category\": \"Aceraceae, Acer\",\n    \"max_light_mmol\": 7200,\n    \"min_light_mmol\": 3000,\n    \"max_light_lux\": 75000,\n    \"min_light_lux\": 2800,\n    \"max_temp\": 35,\n    \"min_temp\": 5,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 30,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 15,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/acer%20buergerianum.jpg\",\n    \"common_names\": [\n        {\n            \"name\": \"Acer lingii\",\n            \"language_code\": \"en\"\n        },\n        {\n            \"name\": \"Клён трёхраздельный\",\n            \"language_code\": \"ru\"\n        }\n    ]\n}"
+        },
+        {
+          "name": "Plant Details with LANG parameter",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/v1/plant/detail/acer buergerianum/?lang=ru",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "plant",
+                "detail",
+                "acer buergerianum",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "ru"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 22 Sep 2025 08:38:35 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Nel",
+              "value": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}"
+            },
+            {
+              "key": "Vary",
+              "value": "Accept, Accept-Language, origin"
+            },
+            {
+              "key": "Allow",
+              "value": "GET, HEAD, OPTIONS"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Language",
+              "value": "en"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "Cross-Origin-Opener-Policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "Report-To",
+              "value": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=4mZv%2FhlndZiFsLp5GLMo%2FgHw9ei7NslcH%2Ba0Nl0B4kPI8A9YjgkPrGeCom6BYpeMYZDJvYDvFJBjJi5beJWn4UkG%2FPM5FOwAHxGFwjxz9sqf\"}]}"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "Server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "CF-RAY",
+              "value": "98307ca14edac9ab-IAD"
+            },
+            {
+              "key": "alt-svc",
+              "value": "h3=\":443\"; ma=86400"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"pid\": \"acer buergerianum\",\n    \"display_pid\": \"Acer buergerianum\",\n    \"alias\": \"Клён трёхраздельный\",\n    \"category\": \"Aceraceae, Acer\",\n    \"max_light_mmol\": 7200,\n    \"min_light_mmol\": 3000,\n    \"max_light_lux\": 75000,\n    \"min_light_lux\": 2800,\n    \"max_temp\": 35,\n    \"min_temp\": 5,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 30,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 15,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/acer%20buergerianum.jpg\",\n    \"common_names\": [\n        {\n            \"name\": \"Acer lingii\",\n            \"language_code\": \"en\"\n        },\n        {\n            \"name\": \"Клён трёхраздельный\",\n            \"language_code\": \"ru\"\n        }\n    ]\n}"
+        }
+      ]
+    },
+    {
+      "name": "CREATE Plant",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"display_pid\": \"Solanum lycopersicum\",\n    \"alias\": \"Tomato\",\n    \"category\": \"Tomato category\",\n    \"max_light_mmol\": 7600,\n    \"min_light_mmol\": 3200,\n    \"max_light_lux\": 55000,\n    \"min_light_lux\": 3000,\n    \"max_temp\": 33,\n    \"min_temp\": 12,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 15,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 20,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/v1/plant/create",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "plant",
+            "create"
+          ]
+        },
+        "description": "# Create new user plant or modify public plant.\n\nAccept JSON payload with parameters. See example.\n\n## Mandatory attributes:\n    <display_pid> - Scientific name of the plant. Based on this attribute <pid> (Plant ID) attribute will be automatically generated by lowering case of this attribute.\n    E.g: <display_pid>=\"Tomato Red\" will result in <pid>=\"tomato red\". See postman example for details.\n\nAll omitted non-mandatory attributes will have null value.\n\n\n## Returns:\n    201 - Successfully created.\n    409 - Plant already exists either in user DB or main DB.\n    400 - Malformed request e.g. if a mandatory attribute is not provided."
+      },
+      "response": [
+        {
+          "name": "CREATE Plant",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"display_pid\": \"Solanum lycopersicum\",\n    \"alias\": \"Tomato\",\n    \"category\": \"Tomato category\",\n    \"max_light_mmol\": 7600,\n    \"min_light_mmol\": 3200,\n    \"max_light_lux\": 55000,\n    \"min_light_lux\": 3000,\n    \"max_temp\": 33,\n    \"min_temp\": 12,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 15,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 20,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/plant/create",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "plant",
+                "create"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": null,
+          "cookie": [],
+          "body": "{\n    \"pid\": \"solanum lycopersicum\",\n    \"display_pid\": \"Solanum lycopersicum\",\n    \"alias\": \"Tomato\",\n    \"category\": \"Tomato category\",\n    \"max_light_mmol\": 7600,\n    \"min_light_mmol\": 3200,\n    \"max_light_lux\": 55000,\n    \"min_light_lux\": 3000,\n    \"max_temp\": 33,\n    \"min_temp\": 12,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 15,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 20,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/solanum%20lycopersicum.jpg\",\n    \"user_plant\": true\n}"
+        }
+      ]
+    },
+    {
+      "name": "DELETE Plant",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"pid\": \"solanum lycopersicum\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/v1/plant/delete",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "plant",
+            "delete"
+          ]
+        },
+        "description": "# Delete plant\n\nDelete plant from user-plants. Public-plants cannot be removed.\n\n## Mandatory attributes:\n    \"pid\" - Plant ID - unique plant identifier. Case SENSITIVE!\n    \n## Return:\n    204 - Successfully deleted.\n    404 - Plant does not exist in user DB.\n    400 - Malformed request e.g. if a mandatory attribute is not provided.    \n\n## Known issue:\nIt does not handle omitted mandatory attribute correctly and always return 404 Not Found even if \"pid\" is absent."
+      },
+      "response": [
+        {
+          "name": "DELETE Plant",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"pid\": \"solanum lycopersicum\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/plant/delete",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "plant",
+                "delete"
+              ]
+            }
+          },
+          "status": "No Content",
+          "code": 204,
+          "_postman_previewlanguage": "plain",
+          "header": [
+            {
+              "key": "Date",
+              "value": "Sun, 18 Sep 2022 10:59:01 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "WSGIServer/0.2 CPython/3.9.13"
+            },
+            {
+              "key": "Allow",
+              "value": "DELETE, OPTIONS"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Length",
+              "value": "0"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "same-origin"
+            }
+          ],
+          "cookie": [],
+          "body": null
+        }
+      ]
+    },
+    {
+      "name": "UPDATE Plant",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"pid\": \"acer pseudoplatanus\",\n    \"max_light_mmol\": 1111,\n    \"min_light_mmol\": 2222,\n    \"max_light_lux\": 4444,\n    \"min_light_lux\": 3333,\n    \"max_temp\": 66,\n    \"min_temp\": 55\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/v1/plant/update",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "plant",
+            "update"
+          ]
+        },
+        "description": "# Update plant\n\nMethod updates either user-plant or public-plant using JSON payload.\nUser-plant is attempted to update first. If user-plant not found then API searches 'pid' in public-plants. If found in public-plants then the public plant will be cloned and saved as user-plant with requested changes.\n\nEndpoint supports PATCH (partial update - updates only provided attributes), PUT is not supported\n\n## Mandatory attributes:\n\n```\n- \"pid\" - Plant ID is unique plant identifier. Case SENSITIVE!\n- at least 1 field with plant's attribute is required. This is to avoid dull duplicates.\n```\n\n## Returns:\n\n```\n200 - Successfully updated.\n404 - Plant exist neither in user-plants nor in public-plants\n400 - Malformed request e.g. if a mandatory attribute is not provided. \n\n```"
+      },
+      "response": [
+        {
+          "name": "UPDATE Plant",
+          "originalRequest": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"pid\": \"acer pseudoplatanus\",\n    \"max_light_mmol\": 1111,\n    \"min_light_mmol\": 2222,\n    \"max_light_lux\": 4444,\n    \"min_light_lux\": 3333,\n    \"max_temp\": 66,\n    \"min_temp\": 55\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/plant/update",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "plant",
+                "update"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": null,
+          "cookie": [],
+          "body": "{\n    \"pid\": \"acer pseudoplatanus\",\n    \"display_pid\": \"Acer pseudoplatanus\",\n    \"alias\": \"acer pseudoplatanus\",\n    \"category\": \"boom\",\n    \"max_light_mmol\": 1111,\n    \"min_light_mmol\": 2222,\n    \"max_light_lux\": 4444,\n    \"min_light_lux\": 3333,\n    \"max_temp\": 66,\n    \"min_temp\": 55,\n    \"max_env_humid\": 80,\n    \"min_env_humid\": 30,\n    \"max_soil_moist\": 60,\n    \"min_soil_moist\": 15,\n    \"max_soil_ec\": 2000,\n    \"min_soil_ec\": 350,\n    \"image_url\": \"https://opb-img.plantbook.io/acer%20pseudoplatanus.jpg\",\n    \"user_plant\": true\n}"
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "oauth_client",
+      "value": "client_id_here"
+    },
+    {
+      "key": "oauth_client_secret",
+      "value": "client_secret_here"
+    },
+    {
+      "key": "accessToken",
+      "value": "token_str_here"
+    },
+    {
+      "key": "url",
+      "value": "https://open.plantbook.io"
+    },
+    {
+      "key": "PlantInstaceID",
+      "value": ""
+    },
+    {
+      "key": "PlantInstanceID",
+      "value": ""
+    }
+  ]
 }

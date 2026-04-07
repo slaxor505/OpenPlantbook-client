@@ -10,13 +10,19 @@ To use this API you need to log in to Open Plantbook web UI at https://open.plan
 
 ## Open Plantbook Cloud release notes:
 
-### **COMING BREAKING CHANGE:** 
-API THROTTLING WILL BE ENABLED from 1 November 2025.
-API requests will be capped to 200 requests per user per day. This is only to prevent API usage abuse by bots and crawlers and preserve the service for other users.
-If you need more requests for any reason, please contact me.
+
+## release 202604-07 (07 April 2026)
+- Added user-friendly description to every field across all plant forms
+- Added unit labels for plant threshold fields in UI forms
+
+## release 202603-28 (28 March 2026)
+- Cache-busting query param to `image_url` based on object modified time (fallback: size) to avoid stale CDN caches
+- CDN Caching mechanism overhaul
+- Rate-limit enforcement
+- Maintenance and security updates
 
 ### release 202509-22 (22 September 2025)
-- New API Feature: API Plant Detail — Alias Override by Language: Added optional `lang` query parameter which accepts either a 2-letter ISO 639-1 language code (e.g., "en") or a 5-character tag of the form ll-CC or ll_CC (e.g., "en-GB", "pt_BR"). When 'lang' parameter provided and a matching common name exists, the response `alias` is overridden with that common name.
+- New API Feature: API Plant Detail — Alias Override by Language: Added optional `lang` query parameter which accepts either a 2-letter ISO 639-1 language code (e.g., "en") or a 5-character tag of the form ll-CC or ll_CC (e.g., "en-GB", "pt_BR"). When 'lang' parameter provided and a matching common name exists, the response `alias` is overridden with that common name
 - Updated both API and UI documentation
 
 ### release 202509 (8 September 2025)
