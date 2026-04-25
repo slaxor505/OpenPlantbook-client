@@ -10,6 +10,9 @@ To use this API you need to log in to Open Plantbook web UI at https://open.plan
 
 ## Open Plantbook Cloud release notes:
 
+## release 202604-25 (25 April 2026)
+- Introduced password reset for non-social login accounts
+- Minor UI fix: grey text on a dark background
 
 ## release 202604-07 (07 April 2026)
 - Added user-friendly description to every field across all plant forms
