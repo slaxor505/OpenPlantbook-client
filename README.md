@@ -1,3 +1,4 @@
+[![Uptime Robot status](https://img.shields.io/uptimerobot/status/m799403964-54aee83dd26a746883b46711)](https://stats.uptimerobot.com/yQ9UV0vNU3)
 # OpenPlantbook-client
 This is a repository for Open Plantbook Cloud and Client release notes, documentation and sample clients.
 
@@ -7,6 +8,11 @@ To use this API you need to log in to Open Plantbook web UI at https://open.plan
 ## Documentation
 - [API documentation](https://documenter.getpostman.com/view/12627470/TVsxBRjD)
 - [Web UI documentation](https://github.com/slaxor505/OpenPlantbook-client/wiki)
+
+## Cloud Service Status
+- API: [![Uptime Robot API](https://img.shields.io/uptimerobot/status/m799404053-3eeae305c5d487b7bc9d946c)](https://stats.uptimerobot.com/yQ9UV0vNU3)
+- WEB: [![Uptime Robot status](https://img.shields.io/uptimerobot/status/m799403964-54aee83dd26a746883b46711)](https://stats.uptimerobot.com/yQ9UV0vNU3)
+- [Uptime status page](https://stats.uptimerobot.com/yQ9UV0vNU3)
 
 ## Open Plantbook Cloud release notes:
 
