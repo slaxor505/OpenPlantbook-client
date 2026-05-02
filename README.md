@@ -10,6 +10,14 @@ To use this API you need to log in to Open Plantbook web UI at https://open.plan
 
 ## Open Plantbook Cloud release notes:
 
+## release 202605-02 (2 May 2026)
+- Enhancement: Expose PlantCreation endpoint via Browsable API, which allows creation of new plants via UI using JSON payload. See Browsable API at [Docs](https://open.plantbook.io/docs/) page.
+
+## release 202604-27 (27 April 2026)
+- New feature: **My Sensors** — view all your plant sensors in one place, with pagination and easy navigation
+- New feature: Introduced **User Settings** — with the very first setting which controls whether your anonymously uploaded sensors can be linked to your profile so it can be used in future dashboards and plant's insights. Still, no extra private data is stored.
+- Minor UI enhancements
+
 ## release 202604-25 (25 April 2026)
 - Introduced password reset for non-social login accounts
 - Minor UI fix: grey text on a dark background
