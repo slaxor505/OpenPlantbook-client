@@ -12,11 +12,14 @@ To use this API you need to log in to Open Plantbook web UI at https://open.plan
 - [Web UI documentation](https://github.com/slaxor505/OpenPlantbook-client/wiki)
 
 ## Cloud Service Status
-- API: [![Uptime Robot API](https://img.shields.io/uptimerobot/status/m799404053-3eeae305c5d487b7bc9d946c)](https://stats.uptimerobot.com/yQ9UV0vNU3)
-- WEB: [![Uptime Robot status](https://img.shields.io/uptimerobot/status/m799403964-54aee83dd26a746883b46711)](https://stats.uptimerobot.com/yQ9UV0vNU3)
+- API: [![Uptime Robot API](https://img.shields.io/uptimerobot/status/m799404053-3eeae305c5d487b7bc9d946c?style=flat)](https://stats.uptimerobot.com/yQ9UV0vNU3)
+- WEB: [![Uptime Robot status](https://img.shields.io/uptimerobot/status/m799403964-54aee83dd26a746883b46711?style=for-the-badge)](https://stats.uptimerobot.com/yQ9UV0vNU3)
 - [Uptime status page](https://stats.uptimerobot.com/yQ9UV0vNU3)
 
 ## Open Plantbook Cloud release notes:
+
+## release 202605-11 (11 May 2026)
+- Enhancement: Expose `origin` field via Plant Details API endpoint
 
 ## release 202605-02 (2 May 2026)
 - Enhancement: Expose PlantCreation endpoint via Browsable API, which allows creation of new plants via UI using JSON payload. See Browsable API at [Docs](https://open.plantbook.io/docs/) page.
