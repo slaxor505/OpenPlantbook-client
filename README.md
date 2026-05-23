@@ -25,7 +25,6 @@ To use this API you need to log in to Open Plantbook web UI at https://open.plan
 
 ## release 202605-18 (18 May 2026)
 - New feature: **Care information section** on plant details pages — care guidance (sunlight, watering, fertilization, pruning, soil) is now displayed with icons and tooltips below the Environment thresholds card.
-- Enhancement: Plant search alias validation improved — queries are trimmed and require at least 3 characters for better results.
 
 ## release 202605-11 (11 May 2026)
 - Enhancement: Expose `origin` field via Plant Details API endpoint
