@@ -13,10 +13,19 @@ To use this API you need to log in to Open Plantbook web UI at https://open.plan
 
 ## Cloud Service Status
 - API: [![Uptime Robot API](https://img.shields.io/uptimerobot/status/m799404053-3eeae305c5d487b7bc9d946c?style=flat)](https://stats.uptimerobot.com/yQ9UV0vNU3)
-- WEB: [![Uptime Robot status](https://img.shields.io/uptimerobot/status/m799403964-54aee83dd26a746883b46711?style=for-the-badge)](https://stats.uptimerobot.com/yQ9UV0vNU3)
+- WEB: [![Uptime Robot status](https://img.shields.io/uptimerobot/status/m799403964-54aee83dd26a746883b46711?style=flat)](https://stats.uptimerobot.com/yQ9UV0vNU3)
 - [Uptime status page](https://stats.uptimerobot.com/yQ9UV0vNU3)
 
 ## Open Plantbook Cloud release notes:
+
+## release 202605-22 (22 May 2026)
+**Milestone: Open Plantbook now provides general plant care information!** This marks a significant step beyond environmental thresholds — the platform now covers how to actually care for your plants.
+
+- New feature: **Editable Care information** — sunlight, watering, fertilization, pruning, and soil fields can now be filled in when creating or editing user-plants. Each field includes a tooltip with guidance and a live character counter.
+
+## release 202605-18 (18 May 2026)
+- New feature: **Care information section** on plant details pages — care guidance (sunlight, watering, fertilization, pruning, soil) is now displayed with icons and tooltips below the Environment thresholds card.
+- Enhancement: Plant search alias validation improved — queries are trimmed and require at least 3 characters for better results.
 
 ## release 202605-11 (11 May 2026)
 - Enhancement: Expose `origin` field via Plant Details API endpoint
