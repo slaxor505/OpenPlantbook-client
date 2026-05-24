@@ -10,6 +10,7 @@ To use this API you need to log in to Open Plantbook web UI at https://open.plan
 ## Documentation
 - [API documentation](https://documenter.getpostman.com/view/12627470/TVsxBRjD)
 - [Web UI documentation](https://github.com/slaxor505/OpenPlantbook-client/wiki)
+- [YouTube playlist with guides](https://youtube.com/playlist?list=PLyPCj53VRBzTxSTZ-LWfsmO-aSqUt-tJv&si=WkjvEjKBbcK8KyUl)
 
 ## Cloud Service Status
 - API: [![Uptime Robot API](https://img.shields.io/uptimerobot/status/m799404053-3eeae305c5d487b7bc9d946c?style=flat)](https://stats.uptimerobot.com/yQ9UV0vNU3)
