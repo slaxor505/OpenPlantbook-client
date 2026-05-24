@@ -8,7 +8,7 @@ This is a repository for Open Plantbook Cloud and Client release notes, document
 To use this API you need to log in to Open Plantbook web UI at https://open.plantbook.io and generate API credentials. The credentials are client_id and client_secret. API authentication implements OAuth2 standard Client Credentials Grant flow.
 
 ## Documentation
-- [API documentation](https://documenter.getpostman.com/view/12627470/TVsxBRjD)
+- [API documentation](https://documenter.getpostman.com/view/12627470/2sBXwjxENf)
 - [Web UI documentation](https://github.com/slaxor505/OpenPlantbook-client/wiki)
 - [YouTube playlist with guides](https://youtube.com/playlist?list=PLyPCj53VRBzTxSTZ-LWfsmO-aSqUt-tJv&si=WkjvEjKBbcK8KyUl)
 
