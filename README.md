@@ -18,6 +18,11 @@ To use this API you need to log in to Open Plantbook web UI at https://open.plan
 
 ## Open Plantbook Cloud release notes:
 
+## release 202605-23 (23 May 2026)
+- New feature: **`include` query parameter** on Plant Detail API — controls which optional data categories appear in the response, e.g., `?include=care`, `?include=care,poison`. The special value `*` includes every known category. Backward compatible: optional categories are omitted by default.
+- Currently supported categories: `care` (soil, sunlight, watering, fertilization, pruning)
+- Drf-spectacular OpenAPI docs updated
+
 ## release 202605-22 (22 May 2026)
 **Milestone: Open Plantbook now provides general plant care information!** This marks a significant step beyond environmental thresholds — the platform now covers how to actually care for your plants.
 
