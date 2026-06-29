@@ -8,7 +8,9 @@ This is a repository for Open Plantbook Cloud and Client release notes, document
 To use this API you need to log in to Open Plantbook web UI at https://open.plantbook.io and generate API credentials. The credentials are client_id and client_secret. API authentication implements OAuth2 standard Client Credentials Grant flow.
 
 ## Documentation
-- [API documentation](https://documenter.getpostman.com/view/12627470/2sBXwjxENf)
+- [Interactive API documentation (Swagger UI)](https://open.plantbook.io/api/docs/) — browse endpoints, see schemas, and send live requests with **Try it out**
+- [API reference (ReDoc)](https://open.plantbook.io/api/redoc/)
+- [OpenAPI 3.0 schema](https://open.plantbook.io/api/schema/) — machine-readable spec for code generators and tooling
 - [Web UI documentation](https://github.com/slaxor505/OpenPlantbook-client/wiki)
 - [YouTube playlist with guides](https://youtube.com/playlist?list=PLyPCj53VRBzTxSTZ-LWfsmO-aSqUt-tJv&si=WkjvEjKBbcK8KyUl)
 
@@ -18,6 +20,16 @@ To use this API you need to log in to Open Plantbook web UI at https://open.plan
 - [Uptime status page](https://stats.uptimerobot.com/yQ9UV0vNU3)
 
 ## Open Plantbook Cloud release notes:
+
+## release 202606-28 (28 June 2026)
+**Milestone: Self-hosted interactive API documentation** — the API is now fully documented and explorable directly on the Open Plantbook server.
+
+- New feature: **Swagger UI** at [`/api/docs/`](https://open.plantbook.io/api/docs/) — browse all endpoints, read request/response examples, and use **Try it out** to send live API calls from your browser
+- New feature: **ReDoc** at [`/api/redoc/`](https://open.plantbook.io/api/redoc/) — a clean, readable API reference
+- New feature: **OpenAPI 3.0 schema** at [`/api/schema/`](https://open.plantbook.io/api/schema/) — always in sync with the running server; use it with code generators, CI validation, or your own tooling
+- Visiting [`/api/`](https://open.plantbook.io/api/) now redirects straight to the interactive docs
+- **Session-friendly for developers** — when logged into the web UI, Try-it-out works with your browser session on the same site (handy for quick experiments without juggling tokens)
+- Dark mode, persisted authorization, and richer endpoint descriptions
 
 ## release 202605-25 (25 May 2026)
 - Security Feature: Show OAuth Client Secret only once after generation
@@ -259,8 +271,13 @@ This library adds support of OpenPlantbook API for DotNet apps.
 - [home-assistant](https://www.home-assistant.io/) integration. [Plant Monitor component](https://github.com/Olen/homeassistant-plant) and [PlantCard](https://github.com/Olen/lovelace-flower-card) which leverage the component. Discussion of HASS forum [here](https://community.home-assistant.io/t/cloud-plant-db-with-api-for-plantcard/).
 
 ## Usage
-The easiest way to get familiar with API is to try [API examples](https://documenter.getpostman.com/view/12627470/TVsxBRjD) in Postman. You can either install the free Postman API tool or use its Web version online: https://www.postman.com/
+The easiest way to get familiar with the API is the [interactive documentation](https://open.plantbook.io/api/docs/) on the Open Plantbook site. Open any endpoint, click **Try it out**, fill in parameters, and execute a live request. No need for API Credentials if you are logged in.
+
+1. Log in at [open.plantbook.io](https://open.plantbook.io)
+2. Open [Swagger UI](https://open.plantbook.io/api/docs/)
+3. Explore endpoints grouped by category (Authentication, Plants, Sensor Data) and use **Try it out** to test calls directly.
+ 
 
 ### Examples
-For up-to-date examples see [API documentation](https://documenter.getpostman.com/view/12627470/TVsxBRjD)
+For up-to-date examples and schemas, see the [interactive API documentation](https://open.plantbook.io/api/docs/) or the [ReDoc reference](https://open.plantbook.io/api/redoc/).
 
