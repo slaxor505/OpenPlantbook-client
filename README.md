@@ -21,6 +21,13 @@ To use this API you need to log in to Open Plantbook web UI at https://open.plan
 
 ## Open Plantbook Cloud release notes:
 
+## release 202607-08 (8 July 2026)
+**Milestone: New OpenClaw AI Agent integration for Open Plantbook** — users can connect Open Plantbook knowledge and workflows to AI assistants for easier plant lookup, care review, and user-plant management.
+
+- New integration: **OpenClaw AI Skill for Open Plantbook** — enables AI assistants to work with Open Plantbook using structured API workflows.
+- The skill can help users search plants, retrieve plant details, review care information, check environmental thresholds, and prepare user-plant create/update payloads with schema validation.
+- Published on ClawHub: https://clawhub.ai/slaxor505/skills/openplantbook
+
 ## release 202606-28 (28 June 2026)
 **Milestone: Self-hosted interactive API documentation** — the API is now fully documented and explorable directly on the Open Plantbook server.
 

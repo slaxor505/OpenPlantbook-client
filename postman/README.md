@@ -1,1 +1,1 @@
-The latest Postman collection with API docs are available [here](https://documenter.getpostman.com/view/12627470/TVsxBRjD)
+The LEGACY Postman collection. API docs are available [here](https://open.plantbook.io/api/docs/)
