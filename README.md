@@ -1,8 +1,6 @@
 [![Uptime Robot status](https://img.shields.io/uptimerobot/status/m799403964-54aee83dd26a746883b46711)](https://stats.uptimerobot.com/yQ9UV0vNU3)
 [![GitHub Release](https://img.shields.io/github/v/release/slaxor505/OpenPlantbook-client)](https://github.com/slaxor505/OpenPlantbook-client/releases)
 
-# (!) The service in undergoing upgrade and maintanence until aroung 6:00 UTC Monday 27th July. (!)
-
 # OpenPlantbook
 This is a repository for Open Plantbook Cloud and Client release notes, documentation and sample clients.
 
