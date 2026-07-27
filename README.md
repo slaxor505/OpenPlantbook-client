@@ -21,6 +21,14 @@ To use this API you need to log in to Open Plantbook web UI at https://open.plan
 
 ## Open Plantbook Cloud release notes:
 
+## release 202607-27 (27 July 2026)
+**Maintenance release: Platform security, reliability, and long-term support**
+
+- Upgraded the underlying Open Plantbook Cloud platform to a current long-term-support foundation for improved
+  security, reliability, and maintainability.
+- Strengthened protection of API client credentials. Existing client IDs and secrets continue to work, so no
+  credential regeneration or integration changes are required.
+
 ## release 202607-08 (8 July 2026)
 **Milestone: New OpenClaw AI Agent integration for Open Plantbook** — users can connect Open Plantbook knowledge and workflows to AI assistants for easier plant lookup, care review, and user-plant management.
 
@@ -287,4 +295,3 @@ The easiest way to get familiar with the API is the [interactive documentation](
 
 ### Examples
 For up-to-date examples and schemas, see the [interactive API documentation](https://open.plantbook.io/api/docs/) or the [ReDoc reference](https://open.plantbook.io/api/redoc/).
-
