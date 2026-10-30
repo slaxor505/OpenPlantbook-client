@@ -29,6 +29,17 @@ If Open Plantbook is useful to you, you can support its continued development:
 
 ## Open Plantbook Cloud release notes:
 
+## release 202610-30 (30 October 2026)
+**Milestone: A growing, evolving public plant database**
+
+- New feature: **Plant request processing and notifications** — user requests are now being processed, and you will be notified when a plant you requested is added to the public database.
+- Ongoing updates will add requested plants and gradually verify and improve existing entries, making the public database more dynamic.
+
+**Roadmap — planned updates**
+
+- **Verified plants and common names** — verified status will be shown for common names and plant entries. Fully verified plants will have both verified names and verified plant data.
+- **Community contributions** — you’ll be able to submit your User Plants for review, with approved entries added to the public database as verified plants.
+
 ## release 202607-27 (27 July 2026)
 **Maintenance release: Platform security, reliability, and long-term support**
 
