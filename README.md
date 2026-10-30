@@ -1,7 +1,5 @@
 [![Uptime Robot status](https://img.shields.io/uptimerobot/status/m799403964-54aee83dd26a746883b46711)](https://stats.uptimerobot.com/yQ9UV0vNU3)
 [![GitHub Release](https://img.shields.io/github/v/release/slaxor505/OpenPlantbook-client)](https://github.com/slaxor505/OpenPlantbook-client/releases)
-[![GitHub Sponsors](https://img.shields.io/badge/GitHub-Sponsor-ea4aaa?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/slaxor505)
-[![Ko-fi](https://img.shields.io/badge/Ko--fi-Support-FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/slaxor505)
 
 # OpenPlantbook
 This is a repository for Open Plantbook Cloud and Client release notes, documentation and sample clients.
@@ -19,8 +17,8 @@ To use this API you need to log in to Open Plantbook web UI at https://open.plan
 ## Support Open Plantbook
 If Open Plantbook is useful to you, you can support its continued development:
 
-- [GitHub Sponsors](https://github.com/sponsors/slaxor505)
-- [Ko-fi](https://ko-fi.com/slaxor505)
+[![GitHub Sponsors](https://img.shields.io/badge/GitHub-Sponsor-ea4aaa?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/slaxor505)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Support-FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/slaxor505)
 
 ## Cloud Service Status
 - API: [![Uptime Robot API](https://img.shields.io/uptimerobot/status/m799404053-3eeae305c5d487b7bc9d946c?style=flat)](https://stats.uptimerobot.com/yQ9UV0vNU3)
